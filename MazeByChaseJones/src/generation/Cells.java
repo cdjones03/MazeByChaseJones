@@ -146,6 +146,9 @@ public class Cells {
 		int x, y;
 		int newSetVal, oldSetVal;
 		int checkX, checkY;
+		newSetVal = setArray[firY][firX];
+		oldSetVal = setArray[secY][secX];
+		/*
 		if(setArray[firX][firX] < setArray[secX][secY])
 		{
 			newSetVal = setArray[firX][firY];
@@ -160,19 +163,20 @@ public class Cells {
 			checkX = secX;
 			checkY = secY;
 		}
-		for(x = 0; x < width-1; x++)
+		*/
+		for(x = 0; x < width; x++)
 		{
-			//for(y = 0; y < height; y++)
-			//{
-				if(setArray[x][checkY] == oldSetVal)
+			for(y = 0; y < height; y++)
+			{
+				if(setArray[y][x] == oldSetVal)
 				{
-					setArray[x][checkY] = newSetVal;
+					setArray[y][x] = newSetVal;
 					//Wall wall = new Wall(x, 0, CardinalDirection.East);
 					//deleteWall(wall);
 				}
 			}
 		}
-	//}
+	}
 	
 	/**
 	 * Initialize maze such that all cells have not been visited, all walls inside the maze are up,
