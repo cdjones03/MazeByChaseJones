@@ -83,6 +83,7 @@ public class Cells {
 	// cells[i][j] is not intuitive in terms of rows and column indices in matrix notation 
 	// as position (i,j) would be column i and row j which is opposite to the normal  
 	// use of rows and columns indices for matrices.
+	private int[][] setArray;
 	
 	/**
 	 * Constructor
@@ -93,6 +94,14 @@ public class Cells {
 		width = w ;
 		height = h ;
 		cells = new int[w][h];
+		setArray = new int[w][h];
+		for(int x = 0; x < width; x++)
+		{
+			for(int y = 0; y < height; y++)
+			{
+				setArray[x][y] = 0;
+			}
+		}
 	}
 
 	/**
@@ -116,6 +125,54 @@ public class Cells {
 		}
 		*/
 	}
+	
+	//Returns which set the cell belongs too.
+	public int getSet(int w, int h)
+	{
+		return this.setArray[w][h];
+	}
+	
+	//Sets the set value of the cell;
+	public void setSet(int w, int h, int s)
+	{
+		this.setArray[w][h] = s;
+	}
+	
+	//Goes through cells and merges two sets.
+	//Needs to update set values.
+	public void mergeSets(int firX, int firY, int secX, int secY)
+	{
+		//TODO finish
+		int x, y;
+		int newSetVal, oldSetVal;
+		int checkX, checkY;
+		if(setArray[firX][firX] < setArray[secX][secY])
+		{
+			newSetVal = setArray[firX][firY];
+			oldSetVal = setArray[secX][secY];
+			checkX = firX;
+			checkY = firY;
+		}
+		else
+		{
+			newSetVal = setArray[secX][secY];
+			oldSetVal = setArray[firX][firY];
+			checkX = secX;
+			checkY = secY;
+		}
+		for(x = 0; x < width-1; x++)
+		{
+			//for(y = 0; y < height; y++)
+			//{
+				if(setArray[x][checkY] == oldSetVal)
+				{
+					setArray[x][checkY] = newSetVal;
+					//Wall wall = new Wall(x, 0, CardinalDirection.East);
+					//deleteWall(wall);
+				}
+			}
+		}
+	//}
 	
 	/**
 	 * Initialize maze such that all cells have not been visited, all walls inside the maze are up,
@@ -920,7 +977,7 @@ public class Cells {
 		{
 			prefix = " i:" + i + " j:";
 			for (int j = 0 ; j < height ; j++)
-				s += prefix + j + "=" + cells[i][j] ;
+				s += prefix + j + "=" + cells[i][j] + " SET" + setArray[i][j] + " ";
 			s += "\n" ;
 		}
 		return s ;

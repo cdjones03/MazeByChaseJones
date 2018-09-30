@@ -5,7 +5,7 @@ public class StubOrder implements Order{
 	@Override
 	public int getSkillLevel() {
 		// TODO Auto-generated method stub
-		return 0;
+		return getSkillLevel();
 	}
 
 	@Override
@@ -17,7 +17,7 @@ public class StubOrder implements Order{
 	@Override
 	public boolean isPerfect() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
