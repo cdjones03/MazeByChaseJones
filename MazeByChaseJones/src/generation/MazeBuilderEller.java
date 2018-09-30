@@ -7,13 +7,14 @@ package generation;
  * @author chasejones
  *
  */
-public class MazeBuilderEller extends MazeBuilder {
+public class MazeBuilderEller extends MazeBuilder implements Runnable{
 
 	/**
 	 * 
 	 */
 	public MazeBuilderEller() {
 		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	/**
@@ -24,4 +25,9 @@ public class MazeBuilderEller extends MazeBuilder {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	protected void generatePathways()
+	{
+		
+	}
 }
