@@ -26,8 +26,6 @@ public final class SingleRandom {
 	 * The constructor for a class that allows for a single instance must be private.
 	 */
 	private SingleRandom() {
-		if(validSeed)
-			System.out.println("hello");
 		generator = validSeed ? new Random(theSeed) : new Random();
 	}
 

@@ -62,7 +62,7 @@ public class StateGenerating extends DefaultState implements Order {
      */
     public StateGenerating() {
         filename = null;
-        factory = new MazeFactory() ;
+        factory = new MazeFactory(true);
         skillLevel = 0; // default size for maze
         builder = Order.Builder.DFS; // default algorithm
         perfect = false; // default: maze can have rooms

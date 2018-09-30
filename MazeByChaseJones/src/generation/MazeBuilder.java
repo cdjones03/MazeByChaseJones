@@ -53,7 +53,7 @@ public class MazeBuilder implements Runnable {
 		if (true == deterministic)
 		{
 			System.out.println("hello");
-			SingleRandom.setSeed(0);
+			SingleRandom.setSeed(10);
 			// Control random number generation
 			//System.out.println("Assignment: functionality to make maze generation deterministic not implemented yet! Fix this! Program stops!");
 			//System.exit(0) ;
