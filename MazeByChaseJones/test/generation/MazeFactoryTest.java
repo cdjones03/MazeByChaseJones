@@ -6,7 +6,13 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import gui.Constants;
+
 public class MazeFactoryTest {
+	
+	private MazeFactory mazeFac = new MazeFactory();
+	private StubOrder stub = new StubOrder();
+	private MazeConfiguration config;
 	
 	MazeBuilder maze = new MazeBuilder();
 	
