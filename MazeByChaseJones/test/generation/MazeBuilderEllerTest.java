@@ -31,6 +31,7 @@ public class MazeBuilderEllerTest {
 		config = stub.getMazeConfiguration();
 	}
 	
+	//Test to make sure all cells belong to the same set by the end of the maze generation.
 	@Test
 	public void testSameSetByEnd()
 	{
@@ -47,6 +48,7 @@ public class MazeBuilderEllerTest {
 		assertTrue(true);
 	}
 	
+	//Test to make sure Cells.getSet() method works.
 	@Test
 	public void testGetSet()
 	{
@@ -54,6 +56,7 @@ public class MazeBuilderEllerTest {
 		assertNotNull(cells.getSet(0, 0));
 	}
 	
+	//Test to make sure Cells.setSet() method works.
 	@Test
 	public void testSetSet()
 	{
@@ -63,10 +66,17 @@ public class MazeBuilderEllerTest {
 		assertEquals(7, setNum);
 	}
 	
+	//Test to make sure Cells.mergeSet() method works.
 	@Test
 	public void testMergeSet()
 	{
-		
+		int[][] cellArr = new int[][] {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}};
+		Cells cells = new Cells(cellArr);
+		cells.setSet(0, 0, 6);
+		cells.setSet(1, 0, 7);
+		cells.mergeSets(0, 0, 1, 0);
+		int setNum = cells.getSet(1, 0);
+		assertEquals(6, setNum);
 	}
 
 }
