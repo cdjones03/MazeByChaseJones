@@ -116,6 +116,7 @@ public class MazeFactoryTest {
 	@Test
 	public void areThereNoRoomsWhenNotExpected()
 	{
-		
+		Cells mazeCells = config.getMazecells();
+		assertFalse(mazeCells.areaOverlapsWithRoom(0, 0, config.getWidth()-1, config.getHeight()-1));
 	}
 }

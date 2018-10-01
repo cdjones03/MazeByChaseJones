@@ -28,6 +28,7 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 	@Override
 	protected void generatePathways()
 	{
+		
 		/**
 		 * 1.Initialize first row (already done)
 		 * 2.Randomly merge sets
@@ -37,73 +38,79 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 		 * 	do not break down walls between cells of same set
 		 * 6.when at last row, connect all disjoint sets
 		 */
-		//MazeBuilderEller maze = new MazeBuilderEller();
-		//maze.buildOrder(order);
-		//maze.run();
 		int setCount = 1;
 		int heightCount = 0;
 		int checkSetCount;
 		ArrayList<Integer> checkSetArr = new ArrayList<Integer>();
 		int ran;
-		for(int x = 0; x < width; x++)
+		
+		/*Be careful!!
+		 *setArray methods use traditional row first, then column value.
+		 *Cells methods use special width (column), then height (row) values.
+		 */
+		for(int x = 0; x < width; x++)//Place all cells in first row individual sets.
 		{
-			cells.setSet(0, x, setCount);
+			cells.setSet(x, 0, setCount);
 			setCount++;
 		}
-		while (heightCount != height-1)
+		//System.out.println(cells);
+		while (heightCount < height-1)
 		{
 			for(int x = 0; x < width-1; x++)//horizontal merging
 			{
 				ran = random.nextIntWithinInterval(0, 1);
 				if(ran == 0)
 				{
-					cells.mergeSets(0, x, 0, x+1);
+					cells.mergeSets(x, heightCount, x+1, heightCount);
 					Wall wall = new Wall(x, heightCount, CardinalDirection.East);
 					cells.deleteWall(wall);
 				}
 			}
+			
 			for(int x = 0; x < width; x++)
 			{
-				int check = cells.getSet(heightCount, x);
-				//for(int y:checkSetArr)
-				//{
-				//if(y == cells.getSet(heightCount, x) )
-				
+				int check = cells.getSet(x, heightCount);
+				if(checkSetArr.contains(check) == false)
+					checkSetArr.add(check);
 			}
+			
+			//System.out.println("checkSetArr " + checkSetArr.toString());
+			
 			for(int x = 0; x < width; x++)//vertical merging
 			{
 				ran = random.nextIntWithinInterval(0, 1);
-				if(ran == 0)
+				if(ran == 0 || checkSetArr.contains(cells.getSet(x, heightCount)))
 				{
-					Wall wall = new Wall(x, 0, CardinalDirection.South);
+					Wall wall = new Wall(x, heightCount, CardinalDirection.South);
 					cells.deleteWall(wall);
-					cells.setSet(heightCount+1, x, cells.getSet(heightCount,x));
+					cells.setSet(x, heightCount+1, cells.getSet(x, heightCount));
+					checkSetArr.remove((cells.getSet(x, heightCount)));
 				}
 			}
+			
 			for(int x = 0; x < width; x++)//filling in next row spots as new sets
 			{
-				if(cells.getSet(heightCount+1, x) == 0)
+				if(cells.getSet(x, heightCount+1) == 0)
 				{
-					cells.setSet(heightCount+1, x, setCount);
+					cells.setSet(x, heightCount+1, setCount);
 					setCount++;
 				}
 			}
 			heightCount++;
-			System.out.println(heightCount + " " + height);
+			//System.out.println(heightCount + " " + height);
+			//System.out.println(cells);
 		}
 		for(int x = 0; x < width-1; x++)
 		{
-			if(cells.getSet(heightCount, x) != cells.getSet(heightCount, x+1))
+			if(cells.getSet(x, heightCount) != cells.getSet(x+1, heightCount))
 			{
-				cells.mergeSets(heightCount, x, heightCount, x+1);
+				cells.mergeSets(x, heightCount, x+1, heightCount);
 				Wall wall = new Wall(x, heightCount, CardinalDirection.East);
 				cells.deleteWall(wall);
 			}
 		}
+		//System.out.println(cells);
 		
-			
-			
-			System.out.println(cells);
 		}
 		
 	}

@@ -83,7 +83,7 @@ public class Cells {
 	// cells[i][j] is not intuitive in terms of rows and column indices in matrix notation 
 	// as position (i,j) would be column i and row j which is opposite to the normal  
 	// use of rows and columns indices for matrices.
-	private int[][] setArray;
+	private Integer[][] setArray;
 	
 	/**
 	 * Constructor
@@ -94,14 +94,9 @@ public class Cells {
 		width = w ;
 		height = h ;
 		cells = new int[w][h];
-		setArray = new int[w][h];
-		for(int x = 0; x < width; x++)
-		{
-			for(int y = 0; y < height; y++)
-			{
-				setArray[x][y] = 0;
-			}
-		}
+		setArray = new Integer[w][h];
+		initSetArr();
+		
 	}
 
 	/**
@@ -126,54 +121,45 @@ public class Cells {
 		*/
 	}
 	
-	//Returns which set the cell belongs too.
-	public int getSet(int w, int h)
+	public void initSetArr()//Sets each cell to set value 0.
 	{
-		return this.setArray[w][h];
+		for(int x = 0; x < width; x++)
+		{
+			for(int y = 0; y < height; y++)
+			{
+				setArray[x][y] = 0;
+			}
+		}
+	}
+	
+	//Returns which set the cell belongs too.
+	public Integer getSet(int col, int row)
+	{
+		return this.setArray[row][col];
 	}
 	
 	//Sets the set value of the cell;
-	public void setSet(int w, int h, int s)
+	public void setSet(int col, int row, int s)
 	{
-		this.setArray[w][h] = s;
+		this.setArray[row][col] = s;
 	}
 	
 	//Goes through cells and merges two sets.
 	//Needs to update set values.
-	public void mergeSets(int firX, int firY, int secX, int secY)
+	public void mergeSets(int firCol, int firRow, int secCol, int secRow)
 	{
 		//TODO finish
 		int x, y;
 		int newSetVal, oldSetVal;
-		int checkX, checkY;
-		newSetVal = setArray[firY][firX];
-		oldSetVal = setArray[secY][secX];
-		/*
-		if(setArray[firX][firX] < setArray[secX][secY])
-		{
-			newSetVal = setArray[firX][firY];
-			oldSetVal = setArray[secX][secY];
-			checkX = firX;
-			checkY = firY;
-		}
-		else
-		{
-			newSetVal = setArray[secX][secY];
-			oldSetVal = setArray[firX][firY];
-			checkX = secX;
-			checkY = secY;
-		}
-		*/
+		newSetVal = setArray[firRow][firCol];
+		oldSetVal = setArray[secRow][secCol];
+		System.out.println("new " + newSetVal + " old " + oldSetVal);
 		for(x = 0; x < width; x++)
 		{
 			for(y = 0; y < height; y++)
 			{
 				if(setArray[y][x] == oldSetVal)
-				{
 					setArray[y][x] = newSetVal;
-					//Wall wall = new Wall(x, 0, CardinalDirection.East);
-					//deleteWall(wall);
-				}
 			}
 		}
 	}
