@@ -111,6 +111,8 @@ public class Cells {
 		cells = new int[width][];
 		for(int i = 0; i < width; i++)
 		    cells[i] = input[i].clone();
+		setArray = new Integer[input.length][input[0].length];
+		initSetArr();
 		/* Basic version
 		this(input.length, input[0].length);
 		for (int i = 0; i < width; i++) {
@@ -153,7 +155,6 @@ public class Cells {
 		int newSetVal, oldSetVal;
 		newSetVal = setArray[firRow][firCol];
 		oldSetVal = setArray[secRow][secCol];
-		System.out.println("new " + newSetVal + " old " + oldSetVal);
 		for(x = 0; x < width; x++)
 		{
 			for(y = 0; y < height; y++)
@@ -967,7 +968,7 @@ public class Cells {
 		{
 			prefix = " i:" + i + " j:";
 			for (int j = 0 ; j < height ; j++)
-				s += prefix + j + "=" + cells[i][j] + " SET" + setArray[i][j] + " ";
+				s += prefix + j + "=" + Integer.toBinaryString(cells[i][j]);
 			s += "\n" ;
 		}
 		return s ;

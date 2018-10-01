@@ -11,7 +11,7 @@ import org.junit.After;
 
 public class MazeFactoryTest {
 	
-	private MazeFactory mazeFac;
+	private MazeFactory mazeFac, mazeFacImperf;
 	private StubOrder stub;
 	private MazeConfiguration config;
 	
@@ -30,6 +30,12 @@ public class MazeFactoryTest {
 		mazeFac.order(stub);
 		mazeFac.waitTillDelivered();
 		config = stub.getMazeConfiguration();
+	}
+	
+	@Test
+	public void testMazeCreation()
+	{
+		assertNotNull(config);
 	}
 	
 	@Test
@@ -74,7 +80,7 @@ public class MazeFactoryTest {
 	public void reproduceMaze()
 	{
 		boolean check = true;
-		StubOrder stub2 = new StubOrder(Builder.DFS, 0, true);
+		StubOrder stub2 = new StubOrder(stub.getBuilder(), stub.getSkillLevel(), stub.isPerfect());
 		mazeFac.order(stub2);
 		mazeFac.waitTillDelivered();
 		MazeConfiguration config2 = stub2.getMazeConfiguration();
@@ -104,10 +110,9 @@ public class MazeFactoryTest {
 	@Test
 	public void areThereRoomsWhenExpected()//Checks if a maze that should have rooms (i.e. >= skill level 1) does have rooms.
 	{
-		MazeFactory mazeFacImperf = new MazeFactory(true);
 		StubOrder stubImperf = new StubOrder(Builder.DFS, 1, false); //A maze must be at least level 1 to have rooms.
-		mazeFacImperf.order(stubImperf);
-		mazeFacImperf.waitTillDelivered();
+		mazeFac.order(stubImperf);
+		mazeFac.waitTillDelivered();
 		MazeConfiguration configImperf = stub.getMazeConfiguration();
 		Cells mazeCells = configImperf.getMazecells();
 		assertTrue(mazeCells.areaOverlapsWithRoom(0, 0, configImperf.getWidth()-1, configImperf.getHeight()-1));
@@ -116,7 +121,40 @@ public class MazeFactoryTest {
 	@Test
 	public void areThereNoRoomsWhenNotExpected()
 	{
-		Cells mazeCells = config.getMazecells();
-		assertFalse(mazeCells.areaOverlapsWithRoom(0, 0, config.getWidth()-1, config.getHeight()-1));
+		Cells cells = config.getMazecells();
+		for(int x = 0; x < config.getWidth(); x++)
+		{
+			for(int y = 0; y < config.getHeight(); y++)
+			{
+				if(cells.isInRoom(x, y))
+					assertFalse(false);
+			}
+		}
+	}
+	
+	@Test
+	public void enoughWalls()
+	{
+		Cells cells = config.getMazecells();
+		for(int x = 0; x < config.getWidth(); x++)
+		{
+			for(int y = 0; y < config.getHeight(); y++)
+			{
+				if(cells.hasWall(x, y, CardinalDirection.North))
+					continue;
+				else if
+					(cells.hasWall(x, y, CardinalDirection.South))
+					continue;
+				else if
+					(cells.hasWall(x, y, CardinalDirection.East))
+					continue;
+				else if
+					(cells.hasWall(x, y, CardinalDirection.West))
+					continue;
+				else
+					assertFalse(false);
+			}
+		}
+		assertTrue(true);
 	}
 }

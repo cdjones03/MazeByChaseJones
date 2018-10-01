@@ -32,6 +32,21 @@ public class StubOrder implements Order{
 		// TODO Auto-generated method stub
 		return perf;
 	}
+	
+	public void setBuilder(Builder newBuild)
+	{
+		this.builder = newBuild;
+	}
+	
+	public void setSkillLevel(int newSkill)
+	{
+		this.skill = newSkill;
+	}
+	
+	public void setPerfect(boolean newPerf)
+	{
+		this.perf = newPerf;
+	}
 
 	@Override //Method delivers a mazeConfig (as parameter) to the stuborder object (i.e. set method)
 	public void deliver(MazeConfiguration mazeConfig) {

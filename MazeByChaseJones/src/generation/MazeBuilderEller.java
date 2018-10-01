@@ -40,7 +40,6 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 		 */
 		int setCount = 1;
 		int heightCount = 0;
-		int checkSetCount;
 		ArrayList<Integer> checkSetArr = new ArrayList<Integer>();
 		int ran;
 		
