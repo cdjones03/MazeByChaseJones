@@ -102,16 +102,15 @@ public class MazeFactoryTest {
 	}
 
 	@Test
-	public void areThereRoomsWhenExpected()
+	public void areThereRoomsWhenExpected()//Checks if a maze that should have rooms (i.e. >= skill level 1) does have rooms.
 	{
 		MazeFactory mazeFacImperf = new MazeFactory(true);
 		StubOrder stubImperf = new StubOrder(Builder.DFS, 1, false); //A maze must be at least level 1 to have rooms.
 		mazeFacImperf.order(stubImperf);
 		mazeFacImperf.waitTillDelivered();
 		MazeConfiguration configImperf = stub.getMazeConfiguration();
-		
-		
-		
+		Cells mazeCells = configImperf.getMazecells();
+		assertTrue(mazeCells.areaOverlapsWithRoom(0, 0, configImperf.getWidth()-1, configImperf.getHeight()-1));
 	}
 	
 	@Test
