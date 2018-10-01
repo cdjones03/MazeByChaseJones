@@ -50,13 +50,17 @@ public class MazeBuilderEllerTest {
 	@Test
 	public void testGetSet()
 	{
-		
+		Cells cells = config.getMazecells();
+		assertNotNull(cells.getSet(0, 0));
 	}
 	
 	@Test
 	public void testSetSet()
 	{
-		
+		Cells cells = config.getMazecells();
+		cells.setSet(0, 0, 7);
+		int setNum = cells.getSet(0, 0);
+		assertEquals(7, setNum);
 	}
 	
 	@Test
