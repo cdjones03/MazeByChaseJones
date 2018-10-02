@@ -15,13 +15,6 @@ public class MazeFactoryTest {
 	private StubOrder stub;
 	private MazeConfiguration config;
 	
-	@Test
-	public void testTest()
-	{
-		//System.out.println(maze);
-		assertFalse(false);
-	}
-	
 	@Before
 	public void setUp()//General setup for default, 0 skill level, perfect maze.
 	{
@@ -157,4 +150,12 @@ public class MazeFactoryTest {
 		}
 		assertTrue(true);
 	}
+	
+	@Test
+	public void hasStartingPosition()
+	{
+		assertNotNull(config.getStartingPosition());
+	}
+	
+	
 }

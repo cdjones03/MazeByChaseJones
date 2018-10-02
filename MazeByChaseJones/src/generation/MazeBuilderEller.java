@@ -1,13 +1,13 @@
 package generation;
 
 import java.util.ArrayList;
+import gui.Constants;
 
 /**
  * @author chasejones
  *
  */
 public class MazeBuilderEller extends MazeBuilder implements Runnable{
-
 	/**
 	 * 
 	 */
@@ -24,11 +24,9 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 		System.out.println("MazeBuilderPrim uses Eller's algorithm to generate maze.");
 		// TODO Auto-generated constructor stub
 	}
-
 	@Override
 	protected void generatePathways()
 	{
-		
 		/**
 		 * 1.Initialize first row (already done)
 		 * 2.Randomly merge sets
@@ -38,31 +36,31 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 		 * 	do not break down walls between cells of same set
 		 * 6.when at last row, connect all disjoint sets
 		 */
+		
 		int setCount = 1;
 		int heightCount = 0;
 		ArrayList<Integer> checkSetArr = new ArrayList<Integer>();
 		int ran;
-		
-		/*Be careful!!
-		 *setArray methods use traditional row first, then column value.
-		 *Cells methods use special width (column), then height (row) values.
-		 */
 		for(int x = 0; x < width; x++)//Place all cells in first row individual sets.
 		{
 			cells.setSet(x, 0, setCount);
 			setCount++;
 		}
 		//System.out.println(cells);
-		while (heightCount < height-1)
+		//for(;heightCount < height-1; heightCount++)
+		while(heightCount < height-1)
 		{
 			for(int x = 0; x < width-1; x++)//horizontal merging
 			{
 				ran = random.nextIntWithinInterval(0, 1);
 				if(ran == 0)
 				{
-					cells.mergeSets(x, heightCount, x+1, heightCount);
 					Wall wall = new Wall(x, heightCount, CardinalDirection.East);
+					if(cells.canGo(wall)) 
+					{
+					cells.mergeSets(x, heightCount, x+1, heightCount);
 					cells.deleteWall(wall);
+					}
 				}
 			}
 			
@@ -78,12 +76,15 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 			for(int x = 0; x < width; x++)//vertical merging
 			{
 				ran = random.nextIntWithinInterval(0, 1);
-				if(ran == 0 || checkSetArr.contains(cells.getSet(x, heightCount)))
+				if(checkSetArr.contains(cells.getSet(x, heightCount)) || ran == 0)
 				{
 					Wall wall = new Wall(x, heightCount, CardinalDirection.South);
-					cells.deleteWall(wall);
-					cells.setSet(x, heightCount+1, cells.getSet(x, heightCount));
-					checkSetArr.remove((cells.getSet(x, heightCount)));
+					//if(cells.canGo(wall))
+					{
+						cells.deleteWall(wall);
+						cells.setSet(x, heightCount+1, cells.getSet(x, heightCount));
+						checkSetArr.remove((cells.getSet(x, heightCount)));
+					}
 				}
 			}
 			
@@ -98,6 +99,7 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 			heightCount++;
 			//System.out.println(heightCount + " " + height);
 			//System.out.println(cells);
+			
 		}
 		for(int x = 0; x < width-1; x++)
 		{
@@ -108,8 +110,5 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 				cells.deleteWall(wall);
 			}
 		}
-		//System.out.println(cells);
-		
 		}
-		
 	}

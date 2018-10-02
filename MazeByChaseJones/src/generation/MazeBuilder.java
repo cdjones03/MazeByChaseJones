@@ -217,7 +217,7 @@ public class MazeBuilder implements Runnable {
 		// the search algorithms starts at some random point
 		generatePathways(); 
 
-		final int[] remote = dists.computeDistances(cells) ;
+		final int[] remote = dists.computeDistances(cells);
 
 		// identify cell with the greatest distance
 		final int[] pos = dists.getStartPosition();

@@ -78,5 +78,17 @@ public class MazeBuilderEllerTest {
 		int setNum = cells.getSet(1, 0);
 		assertEquals(6, setNum);
 	}
-
+	
+	@Test
+	public void testLastRow()
+	{
+		Cells cells = config.getMazecells();
+		int set = cells.getSet(config.getWidth()-1, config.getHeight()-1);
+		int check;
+		for(int x = 0; x < config.getWidth(); x++)
+		{
+			check = cells.getSet(x, config.getHeight()-1);
+			assertEquals(set, check);
+		}
+	}
 }

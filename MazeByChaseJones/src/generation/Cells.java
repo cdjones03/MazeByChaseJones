@@ -94,7 +94,7 @@ public class Cells {
 		width = w ;
 		height = h ;
 		cells = new int[w][h];
-		setArray = new Integer[w][h];
+		setArray = new Integer[h][w];
 		initSetArr();
 		
 	}
@@ -129,7 +129,7 @@ public class Cells {
 		{
 			for(int y = 0; y < height; y++)
 			{
-				setArray[x][y] = 0;
+				setArray[y][x] = 0;
 			}
 		}
 	}
@@ -137,13 +137,13 @@ public class Cells {
 	//Returns which set the cell belongs too.
 	public Integer getSet(int col, int row)
 	{
-		return this.setArray[row][col];
+		return setArray[row][col];
 	}
 	
 	//Sets the set value of the cell;
 	public void setSet(int col, int row, int s)
 	{
-		this.setArray[row][col] = s;
+		setArray[row][col] = s;
 	}
 	
 	//Goes through cells and merges two sets.
