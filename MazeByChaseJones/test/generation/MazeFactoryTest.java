@@ -24,7 +24,7 @@ public class MazeFactoryTest {
 	public void setUp()
 	{
 		mazeFac = new MazeFactory(true); //Makes maze generation deterministic, for purposes of testing.
-		stub = new StubOrder(Builder.DFS, 0, true); //Builder type, skill level, whether perfect or not (i.e no rooms or yes rooms)
+		stub = new StubOrder(Builder.Eller, 0, true); //Builder type, skill level, whether perfect or not (i.e no rooms or yes rooms)
 		mazeFac.order(stub);
 		mazeFac.waitTillDelivered();
 		config = stub.getMazeConfiguration();

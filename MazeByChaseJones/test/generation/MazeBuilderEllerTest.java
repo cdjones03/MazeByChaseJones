@@ -101,5 +101,28 @@ public class MazeBuilderEllerTest {
 			assertEquals(set, check);
 		}
 	}
-
+	
+	/**
+	 * Test to makes sure outside borders are not destroyed by algorithm.
+	 */
+	@Test
+	public void testBorders()
+	{
+		Cells cells = config.getMazecells();
+		for(int x = 0; x < config.getWidth(); x++)
+		{
+			Wall border = new Wall(x, 0, CardinalDirection.North);
+			assertFalse(cells.canGo(border));
+			Wall borderBottom = new Wall(x, config.getHeight()-1, CardinalDirection.South);
+			assertFalse(cells.canGo(borderBottom));
+		}
+		for(int y = 0; y < config.getHeight(); y++)
+		{
+			Wall borderLeft = new Wall(0, y, CardinalDirection.West);
+			assertFalse(cells.canGo(borderLeft));
+			Wall borderRight = new Wall(config.getWidth()-1, y, CardinalDirection.East);
+			assertFalse(cells.canGo(borderRight)); 
+		}
+		assertTrue(true);
+	}
 }
