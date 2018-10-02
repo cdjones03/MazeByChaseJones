@@ -94,8 +94,8 @@ public class Cells {
 		width = w ;
 		height = h ;
 		cells = new int[w][h];
-		setArray = new Integer[h][w];
-		initSetArr();
+		setArray = new Integer[h][w]; //Used for Eller's algorithm.
+		initSetArr();//Used for Eller's algorithm.
 		
 	}
 
@@ -111,8 +111,8 @@ public class Cells {
 		cells = new int[width][];
 		for(int i = 0; i < width; i++)
 		    cells[i] = input[i].clone();
-		setArray = new Integer[input.length][input[0].length];
-		initSetArr();
+		setArray = new Integer[input.length][input[0].length];//Used for Eller's algorithm.
+		initSetArr();//Used for Eller's algorithm.
 		/* Basic version
 		this(input.length, input[0].length);
 		for (int i = 0; i < width; i++) {
@@ -123,6 +123,10 @@ public class Cells {
 		*/
 	}
 	
+	/**
+	 * Methods implemented by @chasejones
+	 * Used for Eller's algorithm to assign each cell into a set.
+	 */
 	public void initSetArr()//Sets each cell to set value 0.
 	{
 		for(int x = 0; x < width; x++)
@@ -134,20 +138,35 @@ public class Cells {
 		}
 	}
 	
-	//Returns which set the cell belongs too.
+	/**
+	 * Returns which set the cell belongs too.
+	 * @param col
+	 * @param row
+	 * @return
+	 */
 	public Integer getSet(int col, int row)
 	{
 		return setArray[row][col];
 	}
 	
-	//Sets the set value of the cell;
+	/**
+	 * Sets the set value of the cell;
+	 * @param col
+	 * @param row
+	 * @param s
+	 */
 	public void setSet(int col, int row, int s)
 	{
 		setArray[row][col] = s;
 	}
 	
-	//Goes through cells and merges two sets.
-	//Needs to update set values.
+	/**
+	 * Goes through cells and merges two sets.
+	 * @param firCol
+	 * @param firRow
+	 * @param secCol
+	 * @param secRow
+	 */
 	public void mergeSets(int firCol, int firRow, int secCol, int secRow)
 	{
 		//TODO finish
@@ -164,6 +183,9 @@ public class Cells {
 			}
 		}
 	}
+	/**
+	 * End of methods implemented for Eller's algorithm by @chasejones
+	 */
 	
 	/**
 	 * Initialize maze such that all cells have not been visited, all walls inside the maze are up,
@@ -968,7 +990,7 @@ public class Cells {
 		{
 			prefix = " i:" + i + " j:";
 			for (int j = 0 ; j < height ; j++)
-				s += prefix + j + "=" + Integer.toBinaryString(cells[i][j]);
+				s += prefix + j + "=" + cells[i][j];
 			s += "\n" ;
 		}
 		return s ;

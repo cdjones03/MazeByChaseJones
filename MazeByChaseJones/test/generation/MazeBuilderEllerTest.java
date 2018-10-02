@@ -2,36 +2,37 @@ package generation;
 
 import static org.junit.Assert.*;
 
-import java.util.Iterator;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import generation.Order.Builder;
 
+/**
+ * @author chasejones
+ */
+
 public class MazeBuilderEllerTest {
-	/*Test ideas:
-	 * make sure mazebuildereller delivers an maze object
-	 * make sure all cells belong to same set by end of algorithm
-	 * test getSet method
-	 * test setSet method
-	 * test mergeSet method
-	 */
 	private MazeFactory mazeFac;
 	private StubOrder stub;
 	private MazeConfiguration config;
 	
+	/**
+	 * General setup for default, Eller build, 0 skill level, perfect maze.
+	 * Runs before every test.
+	 */
 	@Before
-	public void setUp()//General setup for default, 0 skill level, perfect maze.
+	public void setUp()
 	{
 		mazeFac = new MazeFactory(true); //Makes maze generation deterministic, for purposes of testing.
-		stub = new StubOrder(Builder.Eller, 0, true); //Builder type, skill level, whether perfect or not (i.e no rooms or yes rooms)
+		stub = new StubOrder(Builder.Eller, 0, true); //Builder type, skill level, whether perfect or not (i.e no rooms or yes rooms).
 		mazeFac.order(stub);
 		mazeFac.waitTillDelivered();
 		config = stub.getMazeConfiguration();
 	}
 	
-	//Test to make sure all cells belong to the same set by the end of the maze generation.
+	/**
+	 * Test to make sure all cells belong to the same set by the end of the maze generation.
+	 */
 	@Test
 	public void testSameSetByEnd()
 	{
@@ -48,7 +49,9 @@ public class MazeBuilderEllerTest {
 		assertTrue(true);
 	}
 	
-	//Test to make sure Cells.getSet() method works.
+	/**
+	 * Test to make sure Cells.getSet() method works.
+	 */
 	@Test
 	public void testGetSet()
 	{
@@ -56,7 +59,9 @@ public class MazeBuilderEllerTest {
 		assertNotNull(cells.getSet(0, 0));
 	}
 	
-	//Test to make sure Cells.setSet() method works.
+	/**
+	 * Test to make sure Cells.setSet() method works.
+	 */
 	@Test
 	public void testSetSet()
 	{
@@ -66,7 +71,9 @@ public class MazeBuilderEllerTest {
 		assertEquals(7, setNum);
 	}
 	
-	//Test to make sure Cells.mergeSet() method works.
+	/**
+	 * Test to make sure Cells.mergeSet() method works.
+	 */
 	@Test
 	public void testMergeSet()
 	{
@@ -79,6 +86,9 @@ public class MazeBuilderEllerTest {
 		assertEquals(6, setNum);
 	}
 	
+	/**
+	 * Test to make sure all cells in the last row become part of the same set.
+	 */
 	@Test
 	public void testLastRow()
 	{
@@ -91,4 +101,5 @@ public class MazeBuilderEllerTest {
 			assertEquals(set, check);
 		}
 	}
+
 }
