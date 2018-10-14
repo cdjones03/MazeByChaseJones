@@ -6,15 +6,18 @@ import generation.CardinalDirection;
  * @Author: Chase Jones
  * Responsibilities:
  * 
+ * 
  * Collaborators:
+ * Controller.java
  * 
  */
 public class BasicRobot implements Robot {
 	
-	private int energyLevel;
+	private int batteryLevel;
+	private int odometer;
 
 	public BasicRobot() {
-		energyLevel = 3000;
+		batteryLevel = 3000;
 	}
 
 	@Override
@@ -74,7 +77,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public float getBatteryLevel() {
 		// TODO Auto-generated method stub
-		return 0;
+		return batteryLevel;
 	}
 
 	@Override
@@ -86,7 +89,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public int getOdometerReading() {
 		// TODO Auto-generated method stub
-		return 0;
+		return odometer;
 	}
 
 	@Override
@@ -110,7 +113,10 @@ public class BasicRobot implements Robot {
 	@Override
 	public boolean hasStopped() {
 		// TODO Auto-generated method stub
-		return false;
+		//if(batteryLevel == 0)
+			//return true;
+		//else
+		 return false;
 	}
 
 	@Override
