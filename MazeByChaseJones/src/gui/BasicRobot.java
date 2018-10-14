@@ -15,9 +15,12 @@ public class BasicRobot implements Robot {
 	
 	private int batteryLevel;
 	private int odometer;
+	private CardinalDirection curDir;
 
 	public BasicRobot() {
 		batteryLevel = 3000;
+		odometer = 0;
+		curDir = CardinalDirection.East;
 	}
 
 	@Override
@@ -71,7 +74,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public CardinalDirection getCurrentDirection() {
 		// TODO Auto-generated method stub
-		return null;
+		return curDir;
 	}
 
 	@Override
@@ -95,7 +98,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public void resetOdometer() {
 		// TODO Auto-generated method stub
-
+		odometer = 0;
 	}
 
 	@Override
