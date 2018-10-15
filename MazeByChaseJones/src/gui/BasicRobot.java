@@ -9,13 +9,21 @@ import generation.CardinalDirection;
  * 
  * Collaborators:
  * Controller.java
+ * ManualDriver.java
  * 
+ * Battery start = 3000
+ * Sensing in 1D = -1
+ * Rotate 90degress = -3
+ * Moving one step = -5
  */
 public class BasicRobot implements Robot {
 	
-	private int batteryLevel;
+	private float batteryLevel;
 	private int odometer;
 	private CardinalDirection curDir;
+	private boolean roomSensor;
+	private boolean distSensor;
+	private Controller control;
 
 	public BasicRobot() {
 		batteryLevel = 3000;
@@ -32,7 +40,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public void move(int distance, boolean manual) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -44,7 +52,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public void setMaze(Controller controller) {
 		// TODO Auto-generated method stub
-
+		control = controller;
 	}
 
 	@Override
@@ -68,7 +76,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public boolean hasRoomSensor() {
 		// TODO Auto-generated method stub
-		return false;
+		return roomSensor;
 	}
 
 	@Override
@@ -86,7 +94,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public void setBatteryLevel(float level) {
 		// TODO Auto-generated method stub
-
+		batteryLevel = level;
 	}
 
 	@Override

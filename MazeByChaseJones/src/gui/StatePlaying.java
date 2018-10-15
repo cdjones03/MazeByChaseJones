@@ -60,8 +60,13 @@ public class StatePlaying extends DefaultState {
     
     boolean started;
     
+    private BasicRobot robot;
+    private ManualDriver driver;
+    
     public StatePlaying() {
         started = false;
+        driver = new ManualDriver();
+        driver.setRobot(robot);
     }
     @Override
     public void setMazeConfiguration(MazeConfiguration config) {
@@ -154,6 +159,7 @@ public class StatePlaying extends DefaultState {
         case Start: // misplaced, do nothing
             break;
         case Up: // move forward
+        	//driver.moveForward();
             walk(1);
             // check termination, did we leave the maze?
             if (isOutside(px,py)) {
@@ -161,9 +167,11 @@ public class StatePlaying extends DefaultState {
             }
             break;
         case Left: // turn left
+        	//driver.turn(Robot.Turn.LEFT);
             rotate(1);
             break;
         case Right: // turn right
+        	//driver.turn(Robot.Turn.RIGHT);
             rotate(-1);
             break;
         case Down: // move backward
@@ -346,6 +354,7 @@ public class StatePlaying extends DefaultState {
         // update maze direction only after intermediate steps are done
         // because choice of direction values are more limited.
         setDirectionToMatchCurrentAngle();
+        System.out.println(angle);
         //logPosition(); // debugging
     }
 	

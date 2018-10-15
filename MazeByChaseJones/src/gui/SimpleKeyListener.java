@@ -128,7 +128,10 @@ public class SimpleKeyListener implements KeyListener {
 		assert (0 <= value && value <= 15);		
 		// feed user input into controller
 		// value is only used in combination with uikey == Start
-		controller.keyDown(uikey, value);
+		if(uikey == UserInput.Left || uikey == UserInput.Right || uikey == UserInput.Down || uikey == UserInput.Up)
+			((ManualDriver) controller.getDriver()).manualKeyDown(uikey);
+		else
+			controller.keyDown(uikey, value);
 		parent.repaint() ;
 	}
 	@Override

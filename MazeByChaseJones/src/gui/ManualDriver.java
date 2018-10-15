@@ -1,30 +1,37 @@
 package gui;
 
 import generation.Distance;
+import gui.Constants.UserInput;
 
 /**
  * @Author: Chase Jones
  * Responsibilities:
  * 
  * Collaborators:
+ * BasicRobot.java
+ * Controller.java
  * 
+ * needs to receive keyboard input
+ * 	then delegates it to BasicRobot?
  */
 public class ManualDriver implements RobotDriver {
+	
+	private Robot robot;
 
 	public ManualDriver() {
-		// TODO Auto-generated constructor stub
+		robot = new BasicRobot();
 	}
 
 	@Override
 	public void setRobot(Robot r) {
 		// TODO Auto-generated method stub
-
+		robot = r;
 	}
 
 	@Override
 	public void setDimensions(int width, int height) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -49,6 +56,31 @@ public class ManualDriver implements RobotDriver {
 	public int getPathLength() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public void manualKeyDown(UserInput input) {
+		switch(input)
+		{
+		case Up:
+			moveForward();
+			break;
+		case Right:
+			turn(Robot.Turn.RIGHT);
+			break;
+		case Left:
+			turn(Robot.Turn.LEFT);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public void moveForward() {
+		
+	}
+	
+	public void turn(Robot.Turn turn) {
+		
 	}
 
 }
