@@ -17,6 +17,10 @@ import gui.Constants.UserInput;
 public class ManualDriver implements RobotDriver {
 	
 	private Robot robot;
+	private float totalEnergyConsumed;
+	private Distance dist;
+	private int mazeWidth;
+	private int mazeHeight;
 
 	public ManualDriver() {
 		robot = new BasicRobot();
@@ -31,13 +35,14 @@ public class ManualDriver implements RobotDriver {
 	@Override
 	public void setDimensions(int width, int height) {
 		// TODO Auto-generated method stub
-		
+		mazeWidth = width;
+		mazeHeight = height;
 	}
 
 	@Override
 	public void setDistance(Distance distance) {
 		// TODO Auto-generated method stub
-
+		dist = distance;
 	}
 
 	@Override
@@ -49,13 +54,13 @@ public class ManualDriver implements RobotDriver {
 	@Override
 	public float getEnergyConsumption() {
 		// TODO Auto-generated method stub
-		return 0;
+		return totalEnergyConsumed;
 	}
 
 	@Override
 	public int getPathLength() {
 		// TODO Auto-generated method stub
-		return 0;
+		return robot.getOdometerReading();
 	}
 	
 	public void manualKeyDown(UserInput input) {

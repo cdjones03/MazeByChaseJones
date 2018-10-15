@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import generation.CardinalDirection;
 import gui.Constants.UserInput;
+import generation.MazeConfiguration;
 
 /**
  * @Author: Chase Jones
@@ -27,39 +28,56 @@ public class BasicRobot implements Robot {
 	private boolean roomSensor;
 	private boolean distSensor;
 	private Controller control;
+	private MazeConfiguration config;
 
 	public BasicRobot() {
 		batteryLevel = 3000;
 		odometer = 0;
 		curDir = CardinalDirection.East;
+		config = control.getMazeConfiguration();
 	}
 
 	@Override
 	public void rotate(Turn turn) {
 		// TODO Auto-generated method stub
 		if(turn.equals(Robot.Turn.RIGHT))
-			control.keyDown(UserInput.Right, 0);
-		else if(turn.equals(Robot.Turn.LEFT))
-			control.keyDown(UserInput.Left, 0);
-		else if(turn.equals(Robot.Turn.AROUND))
 		{
+			assert batteryLevel >= 3: " battery level too low for rotate";
+			control.keyDown(UserInput.Right, 0);
+			batteryLevel -= 3;
+		}
+		else if(turn.equals(Robot.Turn.LEFT))
+		{
+			assert batteryLevel >= 3: " battery level too low for rotate";
+			control.keyDown(UserInput.Left, 0);
+			batteryLevel -= 3;
+		}
+		else if(batteryLevel >= 6 && turn.equals(Robot.Turn.AROUND))
+		{
+			assert batteryLevel >= 6: " battery level too low for rotate";
 			control.keyDown(UserInput.Right, 0);
 			control.keyDown(UserInput.Right, 0);
+			batteryLevel -= 6;
 		}
 	}
 
 	@Override
 	public void move(int distance, boolean manual) {
 		// TODO Auto-generated method stub
-		if(control.equals(null))
-			assert(false);
-		control.keyDown(UserInput.Up, 0);
+		assert batteryLevel >= getEnergyForStepForward() : " battery too low for move";
+		if(manual)
+			for(int moveCount = 0; moveCount < distance; moveCount++)
+			{
+				control.keyDown(UserInput.Up, 0);
+				batteryLevel -= getEnergyForStepForward();
+				odometer += 1;
+			}
 	}
 
 	@Override
 	public int[] getCurrentPosition() throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return control.getCurrentPosition();
 	}
 
 	@Override
@@ -125,21 +143,18 @@ public class BasicRobot implements Robot {
 	@Override
 	public float getEnergyForFullRotation() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 12;
 	}
 
 	@Override
 	public float getEnergyForStepForward() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 5;
 	}
 
 	@Override
 	public boolean hasStopped() {
 		// TODO Auto-generated method stub
-		//if(batteryLevel == 0)
-			//return true;
-		//else
 		 return false;
 	}
 
