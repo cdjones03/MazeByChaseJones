@@ -115,6 +115,7 @@ public class MazeApplication extends JFrame {
 		setFocusable(true) ;
 		// start the game, hand over control to the game controller
 		controller.start();
+		//controller.setRobotAndDriver(new BasicRobot(), new ManualDriver());
 	}
 	
 	/**

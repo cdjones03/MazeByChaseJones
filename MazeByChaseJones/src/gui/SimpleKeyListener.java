@@ -22,9 +22,17 @@ public class SimpleKeyListener implements KeyListener {
 	private Container parent ;
 	private Controller controller ;
 	
+	Robot robot;
+	RobotDriver driver;
+	
 	SimpleKeyListener(Container parent, Controller controller){
 		this.parent = parent;
 		this.controller = controller;
+		this.robot = new BasicRobot();
+		driver = new ManualDriver();
+		controller.setRobotAndDriver(robot, driver);
+		driver.setRobot(robot);
+		robot.setMaze(controller);
 	}
 	/**
 	 * Translate keyboard input to the corresponding operation for 
@@ -128,8 +136,11 @@ public class SimpleKeyListener implements KeyListener {
 		assert (0 <= value && value <= 15);		
 		// feed user input into controller
 		// value is only used in combination with uikey == Start
+		
 		if(uikey == UserInput.Left || uikey == UserInput.Right || uikey == UserInput.Down || uikey == UserInput.Up)
-			((ManualDriver) controller.getDriver()).manualKeyDown(uikey);
+		{
+			((ManualDriver)controller.getDriver()).manualKeyDown(uikey);
+		}
 		else
 			controller.keyDown(uikey, value);
 		parent.repaint() ;

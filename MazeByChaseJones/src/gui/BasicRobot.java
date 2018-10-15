@@ -1,6 +1,9 @@
 package gui;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import generation.CardinalDirection;
+import gui.Constants.UserInput;
 
 /**
  * @Author: Chase Jones
@@ -34,13 +37,23 @@ public class BasicRobot implements Robot {
 	@Override
 	public void rotate(Turn turn) {
 		// TODO Auto-generated method stub
-
+		if(turn.equals(Robot.Turn.RIGHT))
+			control.keyDown(UserInput.Right, 0);
+		else if(turn.equals(Robot.Turn.LEFT))
+			control.keyDown(UserInput.Left, 0);
+		else if(turn.equals(Robot.Turn.AROUND))
+		{
+			control.keyDown(UserInput.Right, 0);
+			control.keyDown(UserInput.Right, 0);
+		}
 	}
 
 	@Override
 	public void move(int distance, boolean manual) {
 		// TODO Auto-generated method stub
-		
+		if(control.equals(null))
+			assert(false);
+		control.keyDown(UserInput.Up, 0);
 	}
 
 	@Override

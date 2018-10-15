@@ -199,7 +199,6 @@ public class Controller {
     public void setRobotAndDriver(Robot robot, RobotDriver robotdriver) {
         this.robot = robot;
         driver = robotdriver;
-        
     }
     /**
      * @return the robot, may be null

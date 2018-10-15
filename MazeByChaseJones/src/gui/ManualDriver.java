@@ -76,10 +76,11 @@ public class ManualDriver implements RobotDriver {
 	}
 	
 	public void moveForward() {
-		
+		robot.move(1, true);
 	}
 	
 	public void turn(Robot.Turn turn) {
+		robot.rotate(turn);
 		
 	}
 

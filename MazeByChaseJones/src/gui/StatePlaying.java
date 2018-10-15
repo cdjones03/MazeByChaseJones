@@ -60,13 +60,13 @@ public class StatePlaying extends DefaultState {
     
     boolean started;
     
-    private BasicRobot robot;
+    private BasicRobot robot = new BasicRobot();
     private ManualDriver driver;
     
     public StatePlaying() {
         started = false;
-        driver = new ManualDriver();
-        driver.setRobot(robot);
+        //driver = new ManualDriver();
+        //driver.setRobot(robot);
     }
     @Override
     public void setMazeConfiguration(MazeConfiguration config) {
