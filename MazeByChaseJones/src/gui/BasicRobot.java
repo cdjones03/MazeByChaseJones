@@ -30,6 +30,7 @@ public class BasicRobot implements Robot {
 	private boolean roomSensor;
 	private boolean distSensor;
 	private Controller control;
+	private boolean stopped;
 	MazeConfiguration config;
 
 	public BasicRobot() {
@@ -43,21 +44,21 @@ public class BasicRobot implements Robot {
 		// TODO Auto-generated method stub
 		if(turn.equals(Robot.Turn.RIGHT))
 		{
-			assert batteryLevel >= 3: " battery level too low for rotate";
+			assert batteryLevel >= 3: " battery level too low for rotate" + (stopped = true);
 			control.keyDown(UserInput.Right, 0);
 			batteryLevel -= 3;
 			curDir = curDir.rotateClockwise();
 		}
 		else if(turn.equals(Robot.Turn.LEFT))
 		{
-			assert batteryLevel >= 3: " battery level too low for rotate";
+			assert batteryLevel >= 3: " battery level too low for rotate" + (stopped = true);
 			control.keyDown(UserInput.Left, 0);
 			batteryLevel -= 3;
 			curDir = curDir.rotateCounterClockwise();
 		}
 		else if(batteryLevel >= 6 && turn.equals(Robot.Turn.AROUND))
 		{
-			assert batteryLevel >= 6: " battery level too low for rotate";
+			assert batteryLevel >= 6: " battery level too low for rotate" + (stopped = true);
 			control.keyDown(UserInput.Right, 0);
 			control.keyDown(UserInput.Right, 0);
 			batteryLevel -= 6;
@@ -68,7 +69,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public void move(int distance, boolean manual) {
 		// TODO Auto-generated method stub
-		assert batteryLevel >= getEnergyForStepForward() : " battery too low for move";
+		assert batteryLevel >= getEnergyForStepForward() : " battery too low for move" + (stopped = true);
 		if(manual)
 			for(int moveCount = 0; moveCount < distance; moveCount++)
 			{
@@ -94,7 +95,9 @@ public class BasicRobot implements Robot {
 	@Override
 	public boolean isAtExit() {
 		// TODO Auto-generated method stub
-		return false;
+		Cells cells = config.getMazecells();
+		int[] curPos = getCurrentPosition();
+		return cells.isExitPosition(curPos[0], curPos[1]);
 	}
 
 	@Override
@@ -161,7 +164,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public boolean hasStopped() {
 		// TODO Auto-generated method stub
-		 return false;
+		 return stopped;
 	}
 
 	@Override
@@ -170,14 +173,27 @@ public class BasicRobot implements Robot {
 	 * Start with cur position, go in cur direction until obstace
 	 * Count number of steps to get there
 	 * Translate between CardinalDirection, Direction, Wall, etc.
+	 * 
+	 * If Direction is forward, corresponds to robot's curDir
+	 * If Direction is Left, corresponds to curDir.rotateCounterClockwise
+	 * If Direction is Right, corresponds to curDir.rotateClockwise
+	 * If Direction is Backwards, corresponds to curDir.opposite
+	 * 	If robot is facing 
 	 */
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
 		Cells cells = config.getMazecells();
 		int[] curPos = getCurrentPosition();
-		Wall wall = new Wall(curPos[0], curPos[1], direction);
-		while cells.canGo(wall)
-		return 0;
+		Wall wall = new Wall(curPos[0], curPos[1], translateDir(direction));
+		int distCount = 0;
+		int[] newPos = curPos;
+		while(cells.canGo(wall))
+		{
+			distCount++;
+			newPos = getNewPos(newPos);
+			wall = new Wall(newPos[0], newPos[1], translateDir(direction));
+		}
+		return distCount;
 	}
 
 	@Override
@@ -189,13 +205,48 @@ public class BasicRobot implements Robot {
 	//Translate between CardinalDirection, Direction, etc.
 	private CardinalDirection translateDir(Direction direction)
 	{
+		CardinalDirection newDir = curDir;
 		switch(direction) {
+		case FORWARD :
+			newDir = curDir;
+			break;
 		case LEFT :
-			return CardinalDirection.LEFT;
+			newDir = curDir.rotateCounterClockwise();
+			break;
+		case RIGHT :
+			newDir = curDir.rotateClockwise();
+			break;
+		case BACKWARD :
+			newDir = curDir.oppositeDirection();
 			break;
 		default :
 			break;
 		}
+		return newDir;
 	}
+	
+	private int[] getNewPos(int[] pos)
+	{
+		int[] newPos = pos;
+		switch(curDir)
+		{
+		case East :
+			newPos[1]++;
+			break;
+		case West :
+			newPos[1]--;
+			break;
+		case North :
+			newPos[0]--;
+			break;
+		case South :
+			newPos[0]++;
+			break;
+		default :
+			break;
+		}
+		return newPos;
+	}
+	
 
 }
