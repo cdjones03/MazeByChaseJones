@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import generation.CardinalDirection;
 import gui.Constants.UserInput;
 import generation.MazeConfiguration;
+import generation.Cells;
+import generation.Wall;
 
 /**
  * @Author: Chase Jones
@@ -28,13 +30,12 @@ public class BasicRobot implements Robot {
 	private boolean roomSensor;
 	private boolean distSensor;
 	private Controller control;
-	private MazeConfiguration config;
+	MazeConfiguration config;
 
 	public BasicRobot() {
 		batteryLevel = 3000;
 		odometer = 0;
 		curDir = CardinalDirection.East;
-		config = control.getMazeConfiguration();
 	}
 
 	@Override
@@ -45,12 +46,14 @@ public class BasicRobot implements Robot {
 			assert batteryLevel >= 3: " battery level too low for rotate";
 			control.keyDown(UserInput.Right, 0);
 			batteryLevel -= 3;
+			curDir = curDir.rotateClockwise();
 		}
 		else if(turn.equals(Robot.Turn.LEFT))
 		{
 			assert batteryLevel >= 3: " battery level too low for rotate";
 			control.keyDown(UserInput.Left, 0);
 			batteryLevel -= 3;
+			curDir = curDir.rotateCounterClockwise();
 		}
 		else if(batteryLevel >= 6 && turn.equals(Robot.Turn.AROUND))
 		{
@@ -58,6 +61,7 @@ public class BasicRobot implements Robot {
 			control.keyDown(UserInput.Right, 0);
 			control.keyDown(UserInput.Right, 0);
 			batteryLevel -= 6;
+			curDir = curDir.oppositeDirection();
 		}
 	}
 
@@ -84,6 +88,7 @@ public class BasicRobot implements Robot {
 	public void setMaze(Controller controller) {
 		// TODO Auto-generated method stub
 		control = controller;
+		config = control.getMazeConfiguration();
 	}
 
 	@Override
@@ -101,7 +106,8 @@ public class BasicRobot implements Robot {
 	@Override
 	public boolean isInsideRoom() throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
-		return false;
+		int[] curPos = getCurrentPosition();
+		return config.getMazecells().isInRoom(curPos[0], curPos[1]);
 	}
 
 	@Override
@@ -159,8 +165,18 @@ public class BasicRobot implements Robot {
 	}
 
 	@Override
+	/**
+	 * Needs access to maze config cells
+	 * Start with cur position, go in cur direction until obstace
+	 * Count number of steps to get there
+	 * Translate between CardinalDirection, Direction, Wall, etc.
+	 */
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
+		Cells cells = config.getMazecells();
+		int[] curPos = getCurrentPosition();
+		Wall wall = new Wall(curPos[0], curPos[1], direction);
+		while cells.canGo(wall)
 		return 0;
 	}
 
@@ -168,6 +184,18 @@ public class BasicRobot implements Robot {
 	public boolean hasDistanceSensor(Direction direction) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	//Translate between CardinalDirection, Direction, etc.
+	private CardinalDirection translateDir(Direction direction)
+	{
+		switch(direction) {
+		case LEFT :
+			return CardinalDirection.LEFT;
+			break;
+		default :
+			break;
+		}
 	}
 
 }

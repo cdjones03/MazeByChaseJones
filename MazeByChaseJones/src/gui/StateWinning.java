@@ -62,7 +62,12 @@ public class StateWinning extends DefaultState {
         view.redrawFinish(panel);
         // update screen with panel content
         panel.update();
-
+        System.out.println("Energy consumed: " + control.getDriver().getEnergyConsumption());
+        System.out.println("Distance moved: " + control.getDriver().getPathLength());
+    }
+    public Controller getController()
+    {
+    	return control;
     }
     
     /**

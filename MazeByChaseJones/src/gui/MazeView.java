@@ -130,6 +130,7 @@ public class MazeView {
 		gc.setFont(smallBannerFont);
 		fm = gc.getFontMetrics();
 		centerString(gc, fm, "Congratulations!", 160);
+		//centerString(gc, fm, "Testing", 200);
 		// write the instructions
 		gc.setColor(Color.white);
 		centerString(gc, fm, "Hit any key to restart", 300);

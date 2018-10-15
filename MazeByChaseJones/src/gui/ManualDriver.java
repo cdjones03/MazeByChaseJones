@@ -82,10 +82,12 @@ public class ManualDriver implements RobotDriver {
 	
 	public void moveForward() {
 		robot.move(1, true);
+		totalEnergyConsumed += robot.getEnergyForStepForward();
 	}
 	
 	public void turn(Robot.Turn turn) {
 		robot.rotate(turn);
+		totalEnergyConsumed += (1/4)*robot.getEnergyForFullRotation();
 		
 	}
 
