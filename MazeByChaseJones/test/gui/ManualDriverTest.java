@@ -7,6 +7,14 @@ import org.junit.Test;
 
 /**
  * @Author: Chase Jones
+ * 
+ * Test ideas:
+ * 
+ * EnergyConsumption	
+ * 	-actually works for series of moves
+ * 
+ * pathLength
+ * 	-actually works for series of moves
  */
 public class ManualDriverTest {
 	

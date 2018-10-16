@@ -59,11 +59,12 @@ public class StateWinning extends DefaultState {
     	}
         // otherwise show finish screen with winning message
         // draw content on panel
-        view.redrawFinish(panel);
+        int pathLength = control.getDriver().getPathLength();
+        float energyConsumed = control.getDriver().getEnergyConsumption();
+        view.redrawFinish(panel, energyConsumed, pathLength);
         // update screen with panel content
         panel.update();
-        System.out.println("Energy consumed: " + control.getDriver().getEnergyConsumption());
-        System.out.println("Distance moved: " + control.getDriver().getPathLength());
+        
     }
     public Controller getController()
     {

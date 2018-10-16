@@ -103,15 +103,16 @@ public class MazeView {
      * Draws the finish screen, screen content is hard coded
      * @param panel holds the graphics for the off-screen image
      */
-	void redrawFinish(MazePanel panel) {
+	void redrawFinish(MazePanel panel, float energyConsumed, int pathLength) {
 		Graphics g = panel.getBufferGraphics() ;
         if (null == g) {
             System.out.println("MazeView.redrawFinish: can't get graphics object to draw on, skipping redraw operation") ;
         }
         else {
-            redrawFinish(g);
+            redrawFinish(g, energyConsumed, pathLength);
         }
 	}
+	
 	/**
 	 * Helper method for redraw to draw final screen, screen is hard coded
 	 * @param gc graphics is the off-screen image
@@ -130,7 +131,26 @@ public class MazeView {
 		gc.setFont(smallBannerFont);
 		fm = gc.getFontMetrics();
 		centerString(gc, fm, "Congratulations!", 160);
-		//centerString(gc, fm, "Testing", 200);
+		// write the instructions
+		gc.setColor(Color.white);
+		centerString(gc, fm, "Hit any key to restart", 300);
+	}
+	void redrawFinish(Graphics gc, float energyConsumed, int pathLength) {
+		// produce blue background
+		gc.setColor(Color.blue);
+		gc.fillRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
+		// write the title 
+		gc.setFont(largeBannerFont);
+		FontMetrics fm = gc.getFontMetrics();
+		gc.setColor(Color.yellow);
+		centerString(gc, fm, "You won!", 100);
+		// write some extra blurb
+		gc.setColor(Color.orange);
+		gc.setFont(smallBannerFont);
+		fm = gc.getFontMetrics();
+		centerString(gc, fm, "Congratulations!", 160);
+		centerString(gc, fm, "Total Energy Consumed: " + energyConsumed, 200);
+		centerString(gc, fm, "Total Path Length: " + pathLength, 220);
 		// write the instructions
 		gc.setColor(Color.white);
 		centerString(gc, fm, "Hit any key to restart", 300);

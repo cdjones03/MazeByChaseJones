@@ -24,6 +24,7 @@ public class ManualDriver implements RobotDriver {
 
 	public ManualDriver() {
 		robot = new BasicRobot();
+		totalEnergyConsumed = 0;
 	}
 
 	@Override

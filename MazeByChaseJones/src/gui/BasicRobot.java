@@ -47,10 +47,12 @@ public class BasicRobot implements Robot {
 		// TODO Auto-generated method stub
 		if(turn.equals(Robot.Turn.RIGHT))
 		{
-			assert batteryLevel >= ((1/4)*getEnergyForFullRotation()): " battery level too low for rotate" + (stopped = true);
+			if(batteryLevel >= ((1/4)*getEnergyForFullRotation()))
+			{
 			control.keyDown(UserInput.Right, 0);
 			batteryLevel -= ((1/4)*getEnergyForFullRotation());
 			curDir = curDir.rotateClockwise();
+			}
 		}
 		else if(turn.equals(Robot.Turn.LEFT))
 		{
