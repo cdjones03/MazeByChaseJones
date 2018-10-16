@@ -28,15 +28,18 @@ public class BasicRobot implements Robot {
 	private int odometer;
 	private CardinalDirection curDir;
 	private boolean roomSensor;
-	private boolean distSensor;
 	private Controller control;
 	private boolean stopped;
+	final private float energyForFullRotation = 12;
+	final private float energyForStepForward = 5;
+	final private float initialBatteryLevel = 3000;
 	MazeConfiguration config;
 
 	public BasicRobot() {
-		batteryLevel = 3000;
+		batteryLevel = initialBatteryLevel;
 		odometer = 0;
 		curDir = CardinalDirection.East;
+		roomSensor = true;
 	}
 
 	@Override
@@ -44,24 +47,24 @@ public class BasicRobot implements Robot {
 		// TODO Auto-generated method stub
 		if(turn.equals(Robot.Turn.RIGHT))
 		{
-			assert batteryLevel >= 3: " battery level too low for rotate" + (stopped = true);
+			assert batteryLevel >= ((1/4)*getEnergyForFullRotation()): " battery level too low for rotate" + (stopped = true);
 			control.keyDown(UserInput.Right, 0);
-			batteryLevel -= 3;
+			batteryLevel -= ((1/4)*getEnergyForFullRotation());
 			curDir = curDir.rotateClockwise();
 		}
 		else if(turn.equals(Robot.Turn.LEFT))
 		{
-			assert batteryLevel >= 3: " battery level too low for rotate" + (stopped = true);
+			assert batteryLevel >= ((1/4)*getEnergyForFullRotation()): " battery level too low for rotate" + (stopped = true);
 			control.keyDown(UserInput.Left, 0);
-			batteryLevel -= 3;
+			batteryLevel -= ((1/4)*getEnergyForFullRotation());
 			curDir = curDir.rotateCounterClockwise();
 		}
 		else if(batteryLevel >= 6 && turn.equals(Robot.Turn.AROUND))
 		{
-			assert batteryLevel >= 6: " battery level too low for rotate" + (stopped = true);
+			assert batteryLevel >= ((1/2)*getEnergyForFullRotation()): " battery level too low for rotate" + (stopped = true);
 			control.keyDown(UserInput.Right, 0);
 			control.keyDown(UserInput.Right, 0);
-			batteryLevel -= 6;
+			batteryLevel -= ((1/2)*getEnergyForFullRotation());
 			curDir = curDir.oppositeDirection();
 		}
 	}
@@ -95,22 +98,40 @@ public class BasicRobot implements Robot {
 	@Override
 	public boolean isAtExit() {
 		// TODO Auto-generated method stub
-		Cells cells = config.getMazecells();
-		int[] curPos = getCurrentPosition();
-		return cells.isExitPosition(curPos[0], curPos[1]);
+		boolean atExit = false;
+		try {
+			int[] curPos = getCurrentPosition();
+			atExit = config.getMazecells().isExitPosition(curPos[0], curPos[1]);
+		}
+		catch (Exception e)
+		{
+			System.out.println("No current position yet.");
+		}
+		return atExit;
 	}
 
 	@Override
 	public boolean canSeeExit(Direction direction) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
-		return false;
+		if(distanceToObstacle(direction) == Integer.MAX_VALUE)
+			return true;
+		else
+			return false;
 	}
 
 	@Override
 	public boolean isInsideRoom() throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
-		int[] curPos = getCurrentPosition();
-		return config.getMazecells().isInRoom(curPos[0], curPos[1]);
+		boolean inRoom = false;
+		try {
+			int[] curPos = getCurrentPosition();
+			inRoom = config.getMazecells().isInRoom(curPos[0], curPos[1]);
+		}
+		catch (Exception e)
+		{
+			System.out.println("No current position yet.");
+		}
+		return inRoom;
 	}
 
 	@Override
@@ -152,13 +173,13 @@ public class BasicRobot implements Robot {
 	@Override
 	public float getEnergyForFullRotation() {
 		// TODO Auto-generated method stub
-		return 12;
+		return energyForFullRotation;
 	}
 
 	@Override
 	public float getEnergyForStepForward() {
 		// TODO Auto-generated method stub
-		return 5;
+		return energyForStepForward;
 	}
 
 	@Override
@@ -183,22 +204,38 @@ public class BasicRobot implements Robot {
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
 		Cells cells = config.getMazecells();
-		int[] curPos = getCurrentPosition();
-		Wall wall = new Wall(curPos[0], curPos[1], translateDir(direction));
 		int distCount = 0;
-		int[] newPos = curPos;
-		while(cells.canGo(wall))
+		try 
 		{
-			distCount++;
-			newPos = getNewPos(newPos);
-			wall = new Wall(newPos[0], newPos[1], translateDir(direction));
+			int[] curPos = getCurrentPosition();
+			Wall wall = new Wall(curPos[0], curPos[1], translateDir(direction));
+
+			int[] newPos = curPos;
+			while(cells.canGo(wall) && !(cells.isExitPosition(newPos[0], newPos[1])))
+			{
+				distCount++;
+				newPos = getNewPos(newPos);
+				wall = new Wall(newPos[0], newPos[1], translateDir(direction));
+			}
+			if(cells.isExitPosition(newPos[0], newPos[1]))
+				return Integer.MAX_VALUE;
 		}
+		
+		catch (Exception e)
+		{
+			System.out.println("No current position yet. ");
+		}
+		
 		return distCount;
 	}
 
 	@Override
 	public boolean hasDistanceSensor(Direction direction) {
 		// TODO Auto-generated method stub
+		for(Direction dir : Direction.values()){
+			if(direction.equals(dir))
+				return true;
+		}
 		return false;
 	}
 	

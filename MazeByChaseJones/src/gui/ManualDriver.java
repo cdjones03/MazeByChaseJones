@@ -88,6 +88,10 @@ public class ManualDriver implements RobotDriver {
 	public void turn(Robot.Turn turn) {
 		robot.rotate(turn);
 		totalEnergyConsumed += (1/4)*robot.getEnergyForFullRotation();
+	}
+	
+	//public void exitSense(Direction direction)
+	{
 		
 	}
 
