@@ -6,7 +6,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import generation.CardinalDirection;
+import gui.Robot.Direction;
 import gui.Robot.Turn;
+import generation.Cells;
+import generation.Distance;
+import generation.MazeConfiguration;
+import generation.MazeFactory;
+import generation.StubOrder;
+import generation.Order.Builder;
 /**
  * 
  * @author chasejones
@@ -27,9 +34,6 @@ import gui.Robot.Turn;
  * canSeeExit
  * 		-true if can see, false if not
  * 
- * getCurrentDirection
- * 		-current direction works after series of rotates/moves
- * 
  * getOdometerReading
  * 		-actually gets correct odometer reading
  * 
@@ -43,14 +47,34 @@ import gui.Robot.Turn;
  */
 public class BasicRobotTest {
 	
-	//MazeApplication app = new MazeApplication();
-	BasicRobot robot = new BasicRobot();
-	Controller control = new Controller();
+	BasicRobot robot;
+	Controller control;
+	Cells cells;
+	
+	private MazeFactory mazeFac;
+	private StubOrder stub;
+	MazeConfiguration config;
 	
 	@Before
 	public void setUp()
 	{
-		robot.setMaze(control);
+		MazeApplication app = new MazeApplication();
+		control = app.getController();
+		control.switchFromTitleToGenerating(1);
+		config = control.getMazeConfiguration();
+		control.switchFromGeneratingToPlaying(config);
+		config = control.getMazeConfiguration();
+		robot = (BasicRobot) control.getRobot();
+		//control.switchFromGeneratingToPlaying(control.getMazeConfiguration());
+		
+		//robot.setMaze(control);
+		/*
+		mazeFac = new MazeFactory(true); //Makes maze generation deterministic, for purposes of testing.
+		stub = new StubOrder(Builder.DFS, 0, true); //Builder type, skill level, whether perfect or not (i.e no rooms or yes rooms).
+		mazeFac.order(stub);
+		mazeFac.waitTillDelivered();
+		*/
+		//config = stub.getMazeConfiguration();
 	}
 	
 	@Test
@@ -104,7 +128,41 @@ public class BasicRobotTest {
 	@Test
 	public void testMoveOneStepForward()
 	{
-		//robot.move(1, yes);
+		try {
+		int[] curPos = robot.getCurrentPosition();
+		System.out.println(curPos[0] + " " + curPos[1]);}
+		catch (Exception e)
+		{
+			
+		}
+		robot.move(1, true);
+		try {
+			int[] curPos = robot.getCurrentPosition();
+			System.out.println(curPos[0] + " " + curPos[1]);}
+			catch (Exception e)
+			{
+				
+			}
+		robot.rotate(Turn.RIGHT);
+		robot.move(1, true);
+		try {
+			int[] curPos = robot.getCurrentPosition();
+			System.out.println(curPos[0] + " " + curPos[1]);}
+			catch (Exception e)
+			{
+				
+			}
+		robot.rotate(Turn.LEFT);
+		robot.rotate(Turn.LEFT);
+		robot.move(1, true);
+		try {
+			int[] curPos = robot.getCurrentPosition();
+			System.out.println(curPos[0] + " " + curPos[1]);}
+			catch (Exception e)
+			{
+				
+			}
+		assertTrue(true);
 	}
 	
 	@Test
@@ -116,13 +174,53 @@ public class BasicRobotTest {
 	@Test
 	public void isActuallyAtExit()
 	{
-		control.getMazeConfiguration().getMazedists().getExitPosition();
+		//MazeConfiguration config = control.getMazeConfiguration();
+		cells = config.getMazecells();
+		int[] exit = config.getMazedists().computeDistances(cells);
+		//Distance dist = config.getMazedists().computeDistances(cells);
+		//control.setCurrentPosition(exit[0], exit[1]);
+		assertTrue(robot.isAtExit());
 	}
 	
 	@Test
 	public void isNotAtExit()
 	{
 		
+	}
+	
+	@Test
+	public void canSeeExit()
+	{
+		cells = config.getMazecells();
+		int[] exit = config.getMazedists().computeDistances(cells);
+		control.setCurrentPosition(exit[0], exit[1]);
+		while(!(robot.canSeeExit(Direction.FORWARD)))
+			robot.rotate(Turn.RIGHT);
+		assertTrue(robot.canSeeExit(Direction.FORWARD));
+	}
+	
+	@Test
+	public void robotInRoom()
+	{
+		cells = config.getMazecells();
+		int x = 0; 
+		int y = 0;
+		while(!(cells.isInRoom(x, y)))
+		{
+			
+		}
+	}
+	
+	@Test
+	public void robotNotInRoom()
+	{
+		cells = config.getMazecells();
+		int x = 0; 
+		int y = 0;
+		while(cells.isInRoom(x, y))
+		{
+			
+		}
 	}
 	
 }

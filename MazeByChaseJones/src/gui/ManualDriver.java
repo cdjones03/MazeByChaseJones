@@ -5,14 +5,17 @@ import gui.Constants.UserInput;
 
 /**
  * @Author: Chase Jones
+ * 
  * Responsibilities:
+ * Receives input from user, then changes robot
+ * accordingly.
+ * Keeps track of the total path length and total energy consumption of
+ * the driver's robot.
  * 
  * Collaborators:
  * BasicRobot.java
  * Controller.java
- * 
- * needs to receive keyboard input
- * 	then delegates it to BasicRobot?
+ * SimpleKeyListener.java
  */
 public class ManualDriver implements RobotDriver {
 	
@@ -64,6 +67,12 @@ public class ManualDriver implements RobotDriver {
 		return robot.getOdometerReading();
 	}
 	
+	/**
+	 * Takes input from the user and either moves or rotates the manual driver
+	 * accordingly. User can either input Right or Left to rotate, or Up
+	 * to move.
+	 * @param input
+	 */
 	public void manualKeyDown(UserInput input) {
 		switch(input)
 		{
@@ -81,19 +90,50 @@ public class ManualDriver implements RobotDriver {
 		}
 	}
 	
+	/**
+	 * The ManualDriver robot moves forward one step. Only changes the robot's energy
+	 * or adds to the driver's total energy consumption if the driver actually moves 
+	 * to a new position. 
+	 */
 	public void moveForward() {
+		int[] oldPos;
+		int[] newPos;
+		try {
+		oldPos = robot.getCurrentPosition();
 		robot.move(1, true);
-		totalEnergyConsumed += robot.getEnergyForStepForward();
+		newPos = robot.getCurrentPosition();
+		if(oldPos[0] != newPos[0] || oldPos[1] != newPos[1])
+			totalEnergyConsumed += robot.getEnergyForStepForward();
+		}
+		catch (Exception e)
+		{
+			
+		}
+		
 	}
 	
+	/**
+	 * The ManualDriver robot turns based on the turn parameter. Depletes the robot's energy
+	 * and adds to the total energy consumption of the driver.
+	 * @param turn
+	 */
 	public void turn(Robot.Turn turn) {
 		robot.rotate(turn);
 		totalEnergyConsumed += (1/4)*robot.getEnergyForFullRotation();
 	}
 	
-	//public void exitSense(Direction direction)
+	/**
+	 * Returns the driver's robot's current position.
+	 * @return
+	 */
+	public int[] getCurrentPosition()
 	{
-		
+		try {
+		return robot.getCurrentPosition();}
+		catch (Exception e)
+		{
+		}
+		return null;
 	}
 
 }

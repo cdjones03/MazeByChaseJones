@@ -11,7 +11,10 @@ import generation.Wall;
 /**
  * @Author: Chase Jones
  * Responsibilities:
- * 
+ * Keeps track of a robot in the maze. Robot has sensors to check for
+ * the exit and obstacles (walls, borders) that would be in its path.
+ * Robot has a battery that is depleted with every sensor use, move, or
+ * rotate.
  * 
  * Collaborators:
  * Controller.java
@@ -56,14 +59,14 @@ public class BasicRobot implements Robot {
 		}
 		else if(turn.equals(Robot.Turn.LEFT))
 		{
-			assert batteryLevel >= ((1/4)*getEnergyForFullRotation()): " battery level too low for rotate" + (stopped = true);
+			assert batteryLevel >= ((1/4)*getEnergyForFullRotation()): " battery level too low for rotate";
 			control.keyDown(UserInput.Left, 0);
 			batteryLevel -= ((1/4)*getEnergyForFullRotation());
 			curDir = curDir.rotateCounterClockwise();
 		}
 		else if(batteryLevel >= 6 && turn.equals(Robot.Turn.AROUND))
 		{
-			assert batteryLevel >= ((1/2)*getEnergyForFullRotation()): " battery level too low for rotate" + (stopped = true);
+			assert batteryLevel >= ((1/2)*getEnergyForFullRotation()): " battery level too low for rotate";
 			control.keyDown(UserInput.Right, 0);
 			control.keyDown(UserInput.Right, 0);
 			batteryLevel -= ((1/2)*getEnergyForFullRotation());
@@ -74,14 +77,44 @@ public class BasicRobot implements Robot {
 	@Override
 	public void move(int distance, boolean manual) {
 		// TODO Auto-generated method stub
-		assert batteryLevel >= getEnergyForStepForward() : " battery too low for move" + (stopped = true);
+		// + (stopped = true);
+		Cells cells = config.getMazecells();
 		if(manual)
+		{
+			assert batteryLevel >= getEnergyForStepForward(): " battery too low for move";
+			assert !hasStopped() : " robot has stopped";
 			for(int moveCount = 0; moveCount < distance; moveCount++)
 			{
 				control.keyDown(UserInput.Up, 0);
 				batteryLevel -= getEnergyForStepForward();
 				odometer += 1;
 			}
+		}
+		else
+		{
+			for(int moveCount = 0; moveCount < distance; moveCount++)
+			{
+				try {
+					int[] curPos = getCurrentPosition();
+					Wall wall = new Wall(curPos[0], curPos[1], translateDir(Direction.FORWARD));
+					if (batteryLevel < getEnergyForStepForward() || !(cells.canGo(wall)))
+					{
+						stopped = true;
+						break;
+					}
+					if(!hasStopped())
+					{
+						control.keyDown(UserInput.Up, 0);
+						batteryLevel -= getEnergyForStepForward();
+						odometer += 1;
+					}
+				}
+				catch (Exception e)
+				{
+
+				}
+			}
+		}
 	}
 
 	@Override
@@ -115,6 +148,7 @@ public class BasicRobot implements Robot {
 	@Override
 	public boolean canSeeExit(Direction direction) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
+		batteryLevel -= 1;
 		if(distanceToObstacle(direction) == Integer.MAX_VALUE)
 			return true;
 		else
@@ -205,6 +239,7 @@ public class BasicRobot implements Robot {
 	 */
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
+		batteryLevel -= 1;
 		Cells cells = config.getMazecells();
 		int distCount = 0;
 		try 
@@ -241,7 +276,12 @@ public class BasicRobot implements Robot {
 		return false;
 	}
 	
-	//Translate between CardinalDirection, Direction, etc.
+	/**
+	 * Translates a Robot direction into a cardinal direction, based
+	 * on the robot's current direction.
+	 * @param direction
+	 * @return
+	 */
 	private CardinalDirection translateDir(Direction direction)
 	{
 		CardinalDirection newDir = curDir;
@@ -264,6 +304,12 @@ public class BasicRobot implements Robot {
 		return newDir;
 	}
 	
+	/**
+	 * Changes the robot's current position based on
+	 * its current direction.
+	 * @param pos
+	 * @return
+	 */
 	private int[] getNewPos(int[] pos)
 	{
 		int[] newPos = pos;

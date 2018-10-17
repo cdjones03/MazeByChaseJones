@@ -24,6 +24,8 @@ public class MazeApplication extends JFrame {
 
 	// not used, just to make the compiler, static code checker happy
 	private static final long serialVersionUID = 1L;
+	
+	Controller controller;
 
 	/**
 	 * Constructor
@@ -101,7 +103,7 @@ public class MazeApplication extends JFrame {
 	 */
 	private void init(String parameter) {
 	    // instantiate a game controller and add it to the JFrame
-	    Controller controller = createController(parameter);
+	    controller = createController(parameter);
 		add(controller.getPanel()) ;
 		// instantiate a key listener that feeds keyboard input into the controller
 		// and add it to the JFrame
@@ -141,6 +143,11 @@ public class MazeApplication extends JFrame {
 		break ;
 		}
 		app.repaint() ;
+	}
+	
+	public Controller getController()
+	{
+		return controller;
 	}
 
 }

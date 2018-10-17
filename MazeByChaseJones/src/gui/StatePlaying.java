@@ -60,13 +60,8 @@ public class StatePlaying extends DefaultState {
     
     boolean started;
     
-    private BasicRobot robot = new BasicRobot();
-    private ManualDriver driver;
-    
     public StatePlaying() {
         started = false;
-        //driver = new ManualDriver();
-        //driver.setRobot(robot);
     }
     @Override
     public void setMazeConfiguration(MazeConfiguration config) {
@@ -93,6 +88,7 @@ public class StatePlaying extends DefaultState {
         showSolution = false ;
         mapMode = false;
         // init data structure for visible walls
+        //assert null != mazeConfig : " maze config null";
         seenCells = new Cells(mazeConfig.getWidth()+1,mazeConfig.getHeight()+1) ;
         // set the current position and direction consistently with the viewing direction
         setPositionDirectionViewingDirection();

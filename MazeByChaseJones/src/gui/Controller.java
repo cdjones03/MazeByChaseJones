@@ -89,6 +89,9 @@ public class Controller {
         fileName = null;
         builder = Order.Builder.DFS; // default
         perfect = false; // default
+        robot = new BasicRobot();
+        driver = new ManualDriver();
+        driver.setRobot(robot);
     }
     
     public void setFileName(String fileName) {
@@ -144,6 +147,7 @@ public class Controller {
      * @param config contains a maze to play
      */
     public void switchFromGeneratingToPlaying(MazeConfiguration config) {
+    	assert null != config : " config null";
         currentState = states[2];
         currentState.setMazeConfiguration(config);
         currentState.start(this, panel);
@@ -246,5 +250,9 @@ public class Controller {
      */
     public CardinalDirection getCurrentDirection() {
         return ((StatePlaying)states[2]).getCurrentDirection();
+    }
+    
+    public void setCurrentPosition(int x, int y) {
+    	((StatePlaying)states[2]).setCurrentPosition(x, y);
     }
 }

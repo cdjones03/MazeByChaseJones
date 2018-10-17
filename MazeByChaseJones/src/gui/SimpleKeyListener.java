@@ -28,11 +28,14 @@ public class SimpleKeyListener implements KeyListener {
 	SimpleKeyListener(Container parent, Controller controller){
 		this.parent = parent;
 		this.controller = controller;
+		/*
 		this.robot = new BasicRobot();
 		driver = new ManualDriver();
 		controller.setRobotAndDriver(robot, driver);
 		driver.setRobot(robot);
-		robot.setMaze(controller);
+		*/
+		controller.getRobot().setMaze(controller);
+		
 	}
 	/**
 	 * Translate keyboard input to the corresponding operation for 

@@ -102,6 +102,9 @@ public class MazeView {
     /**
      * Draws the finish screen, screen content is hard coded
      * @param panel holds the graphics for the off-screen image
+     * 
+     * Parameters for energyConsumed and pathLength added by @ChaseJones
+     * for Project 3.
      */
 	void redrawFinish(MazePanel panel, float energyConsumed, int pathLength) {
 		Graphics g = panel.getBufferGraphics() ;
@@ -135,6 +138,15 @@ public class MazeView {
 		gc.setColor(Color.white);
 		centerString(gc, fm, "Hit any key to restart", 300);
 	}
+	
+	/**
+	 * Overloaded of first redrawFinish method.
+	 * Has parameters for robot's total energy consumption and path length
+	 * to be displayed on final screen for user.
+	 * @param gc
+	 * @param energyConsumed
+	 * @param pathLength
+	 */
 	void redrawFinish(Graphics gc, float energyConsumed, int pathLength) {
 		// produce blue background
 		gc.setColor(Color.blue);
