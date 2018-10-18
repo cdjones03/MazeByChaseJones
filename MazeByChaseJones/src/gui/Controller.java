@@ -89,6 +89,8 @@ public class Controller {
         fileName = null;
         builder = Order.Builder.DFS; // default
         perfect = false; // default
+        
+        //For P3
         robot = new BasicRobot();
         driver = new ManualDriver();
         driver.setRobot(robot);
@@ -151,6 +153,9 @@ public class Controller {
         currentState = states[2];
         currentState.setMazeConfiguration(config);
         currentState.start(this, panel);
+        this.getRobot().setBatteryLevel(10);
+        this.getRobot().resetOdometer();
+        this.getDriver().setRobot(this.getRobot());
     }
     /**
      * Switches the controller to the final screen
@@ -161,12 +166,14 @@ public class Controller {
         currentState.setPathLength(pathLength);
         currentState.start(this, panel);
     }
+    
     /**
      * Switches the controller to the initial screen.
      */
     public void switchToTitle() {
         currentState = states[0];
         currentState.start(this, panel);
+  
     }
     
     /**

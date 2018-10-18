@@ -30,7 +30,6 @@ public class StateWinning extends DefaultState {
     MazePanel panel;
     Controller control;
     
-    
     boolean started;
     int pathLength;
     
@@ -61,7 +60,8 @@ public class StateWinning extends DefaultState {
         // draw content on panel
         int pathLength = control.getDriver().getPathLength();
         float energyConsumed = control.getDriver().getEnergyConsumption();
-        view.redrawFinish(panel, energyConsumed, pathLength);
+        boolean outOfEnergy = ((BasicRobot) control.getRobot()).robotOutOfEnergy();
+        view.redrawFinish(panel, energyConsumed, pathLength, outOfEnergy);
         // update screen with panel content
         panel.update();
         

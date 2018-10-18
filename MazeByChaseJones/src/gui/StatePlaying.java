@@ -372,12 +372,7 @@ public class StatePlaying extends DefaultState {
             walkStep += dir;
             slowedDownRedraw();
         }
-        int[] pos = getCurrentPosition();
-        System.out.println("pxS: " + pos[0] + " pyS: " + pos[1]);
         setCurrentPosition(px + dir*dx, py + dir*dy) ;
-        pos = getCurrentPosition();
-        System.out.println("pxE: " + pos[0] + " pyE: " + pos[1]);
-        System.out.println();
         walkStep = 0; // reset counter for next time
         //logPosition(); // debugging
     }

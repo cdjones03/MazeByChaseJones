@@ -106,13 +106,13 @@ public class MazeView {
      * Parameters for energyConsumed and pathLength added by @ChaseJones
      * for Project 3.
      */
-	void redrawFinish(MazePanel panel, float energyConsumed, int pathLength) {
+	void redrawFinish(MazePanel panel, float energyConsumed, int pathLength, boolean outOfEnergy) {
 		Graphics g = panel.getBufferGraphics() ;
         if (null == g) {
             System.out.println("MazeView.redrawFinish: can't get graphics object to draw on, skipping redraw operation") ;
         }
         else {
-            redrawFinish(g, energyConsumed, pathLength);
+            redrawFinish(g, energyConsumed, pathLength, outOfEnergy);
         }
 	}
 	
@@ -147,7 +147,7 @@ public class MazeView {
 	 * @param energyConsumed
 	 * @param pathLength
 	 */
-	void redrawFinish(Graphics gc, float energyConsumed, int pathLength) {
+	void redrawFinish(Graphics gc, float energyConsumed, int pathLength, boolean outOfEnergy) {
 		// produce blue background
 		gc.setColor(Color.blue);
 		gc.fillRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
@@ -155,14 +155,20 @@ public class MazeView {
 		gc.setFont(largeBannerFont);
 		FontMetrics fm = gc.getFontMetrics();
 		gc.setColor(Color.yellow);
-		centerString(gc, fm, "You won!", 100);
+		if(!outOfEnergy)
+			centerString(gc, fm, "You won!", 100);
+		else
+			centerString(gc, fm, "You lost!", 100);
 		// write some extra blurb
 		gc.setColor(Color.orange);
 		gc.setFont(smallBannerFont);
 		fm = gc.getFontMetrics();
-		centerString(gc, fm, "Congratulations!", 160);
+		if(!outOfEnergy) {
+		centerString(gc, fm, "Congratulations!", 160);}
 		centerString(gc, fm, "Total Energy Consumed: " + energyConsumed, 200);
 		centerString(gc, fm, "Total Path Length: " + pathLength, 220);
+		if(outOfEnergy)
+			centerString(gc, fm, "Your robot ran out of energy! You'll have to try again.", 260);
 		// write the instructions
 		gc.setColor(Color.white);
 		centerString(gc, fm, "Hit any key to restart", 300);

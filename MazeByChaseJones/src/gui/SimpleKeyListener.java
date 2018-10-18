@@ -28,14 +28,7 @@ public class SimpleKeyListener implements KeyListener {
 	SimpleKeyListener(Container parent, Controller controller){
 		this.parent = parent;
 		this.controller = controller;
-		/*
-		this.robot = new BasicRobot();
-		driver = new ManualDriver();
-		controller.setRobotAndDriver(robot, driver);
-		driver.setRobot(robot);
-		*/
-		controller.getRobot().setMaze(controller);
-		
+		this.controller.getRobot().setMaze(controller); //Easiest way to give robot reference to controller.
 	}
 	/**
 	 * Translate keyboard input to the corresponding operation for 
@@ -140,9 +133,11 @@ public class SimpleKeyListener implements KeyListener {
 		// feed user input into controller
 		// value is only used in combination with uikey == Start
 		
-		if(uikey == UserInput.Left || uikey == UserInput.Right || uikey == UserInput.Down || uikey == UserInput.Up)
+		//If there is a robot, routes Left, Right, and Up through it.
+		//Other operations go through the current state.
+		if(uikey == UserInput.Left || uikey == UserInput.Right || uikey == UserInput.Up)
 		{
-			((ManualDriver)controller.getDriver()).manualKeyDown(uikey);
+			((ManualDriver)controller.getDriver()).manualKeyDown(uikey); 
 		}
 		else
 			controller.keyDown(uikey, value);

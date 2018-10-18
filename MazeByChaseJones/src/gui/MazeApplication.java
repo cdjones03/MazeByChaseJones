@@ -92,7 +92,7 @@ public class MazeApplication extends JFrame {
 	    }
 	    // controller instanted and attributes set according to given input parameter
 	    // output message and return controller
-	    System.out.println(msg);
+	    //System.out.println(msg);
 	    return result;
 	}
 
@@ -145,9 +145,13 @@ public class MazeApplication extends JFrame {
 		app.repaint() ;
 	}
 	
+	/**
+	 * Returns the Maze app's controller.
+	 * @return
+	 */
 	public Controller getController()
 	{
-		return controller;
+		return this.controller;
 	}
 
 }

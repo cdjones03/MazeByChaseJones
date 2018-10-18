@@ -25,6 +25,10 @@ public class ManualDriver implements RobotDriver {
 	private int mazeWidth;
 	private int mazeHeight;
 
+	/**
+	 * Sets up a new ManualDriver with a new BasicRobot. Also
+	 * initializes its total energy consumption to 0.
+	 */
 	public ManualDriver() {
 		robot = new BasicRobot();
 		totalEnergyConsumed = 0;
@@ -70,7 +74,8 @@ public class ManualDriver implements RobotDriver {
 	/**
 	 * Takes input from the user and either moves or rotates the manual driver
 	 * accordingly. User can either input Right or Left to rotate, or Up
-	 * to move.
+	 * to move forward. ManualDriver can only do one of these three operations,
+	 * so all other just route through the original keyListener.
 	 * @param input
 	 */
 	public void manualKeyDown(UserInput input) {
@@ -99,15 +104,18 @@ public class ManualDriver implements RobotDriver {
 		int[] oldPos;
 		int[] newPos;
 		try {
-		oldPos = robot.getCurrentPosition();
-		robot.move(1, true);
-		newPos = robot.getCurrentPosition();
-		if(oldPos[0] != newPos[0] || oldPos[1] != newPos[1])
-			totalEnergyConsumed += robot.getEnergyForStepForward();
+			oldPos = robot.getCurrentPosition();
+			System.out.println("old " + oldPos[0] + " " + oldPos[1]);
+			robot.move(1, true);
+			newPos = robot.getCurrentPosition();
+			System.out.println("new " + newPos[0] + " " + newPos[1]);
+			if(oldPos[0] != newPos[0] || oldPos[1] != newPos[1]) //If the driver's robot has actually moved, takes energy.
+				totalEnergyConsumed += robot.getEnergyForStepForward();
 		}
 		catch (Exception e)
 		{
-			
+			//e.printStackTrace();
+			//System.out.println("1Robot outside of maze.");
 		}
 		
 	}
@@ -129,9 +137,11 @@ public class ManualDriver implements RobotDriver {
 	public int[] getCurrentPosition()
 	{
 		try {
-		return robot.getCurrentPosition();}
+		return robot.getCurrentPosition();
+		}
 		catch (Exception e)
 		{
+			System.out.println("2Robot outside of maze.");
 		}
 		return null;
 	}
