@@ -350,7 +350,6 @@ public class StatePlaying extends DefaultState {
         // update maze direction only after intermediate steps are done
         // because choice of direction values are more limited.
         setDirectionToMatchCurrentAngle();
-        System.out.println(angle);
         //logPosition(); // debugging
     }
 	

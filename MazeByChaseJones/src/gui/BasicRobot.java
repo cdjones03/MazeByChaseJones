@@ -35,7 +35,7 @@ public class BasicRobot implements Robot {
 	private boolean stopped;
 	final private float energyForFullRotation = 12;
 	final private float energyForStepForward = 5;
-	final private float initialBatteryLevel = 10;
+	final private float initialBatteryLevel = 3000;
 	MazeConfiguration config;
 
 	/**
@@ -57,32 +57,35 @@ public class BasicRobot implements Robot {
 	 * rotate.
 	 */
 	public void rotate(Turn turn) {
-		//if(batteryLevel < 5)
-			//noEnergyGameLost();
+		if(batteryLevel < 5) //If the robot cannot move, winning is no longer possible, so rotate does not need to occur.
+		{
+			noEnergyGameLost();
+			return;
+		}
+		
 		if(turn.equals(Robot.Turn.RIGHT))
 		{
-			if(batteryLevel >= ((1/4)*getEnergyForFullRotation()))
-			{
+			assert batteryLevel >= ((0.25)*getEnergyForFullRotation()): " battery level too low for right rotate";
 			control.keyDown(UserInput.Right, 0);
-			batteryLevel -= ((1/4)*getEnergyForFullRotation());
+			batteryLevel -= ((0.25)*getEnergyForFullRotation());
 			curDir = curDir.rotateClockwise();
-			}
+			
 		}
 		
 		else if(turn.equals(Robot.Turn.LEFT))
 		{
-			assert batteryLevel >= ((1/4)*getEnergyForFullRotation()): " battery level too low for rotate";
+			assert batteryLevel >= ((0.25)*getEnergyForFullRotation()): " battery level too low for left rotate";
 			control.keyDown(UserInput.Left, 0);
-			batteryLevel -= ((1/4)*getEnergyForFullRotation());
+			batteryLevel -= (0.25*getEnergyForFullRotation());
 			curDir = curDir.rotateCounterClockwise();
 		}
 		
-		else if(batteryLevel >= 6 && turn.equals(Robot.Turn.AROUND))
+		else if(batteryLevel >= ((0.5)*getEnergyForFullRotation()) && turn.equals(Robot.Turn.AROUND))
 		{
-			assert batteryLevel >= ((1/2)*getEnergyForFullRotation()): " battery level too low for rotate";
+			assert batteryLevel >= ((0.5)*getEnergyForFullRotation()): " battery level too low for around rotate";
 			control.keyDown(UserInput.Right, 0);
 			control.keyDown(UserInput.Right, 0);
-			batteryLevel -= ((1/2)*getEnergyForFullRotation());
+			batteryLevel -= ((0.5)*getEnergyForFullRotation());
 			curDir = curDir.oppositeDirection();
 		}
 	}
@@ -98,13 +101,14 @@ public class BasicRobot implements Robot {
 	 * do not match. Only takes energy based on the amount of steps the robot actually moves.
 	 */
 	public void move(int distance, boolean manual) {
-		if(batteryLevel < 5)
+		if(batteryLevel < 5) {
 			noEnergyGameLost();
+			return;
+			}
 		if(manual) //Robot will move forward one step if possible.
 		{
 			try {
 				int[] curPos = getCurrentPosition();
-				System.out.println("cur " + curPos[0] + curPos[1]);
 				assert getBatteryLevel() >= getEnergyForStepForward(): " battery too low for move";
 				assert !hasStopped() : " robot has stopped";
 				for(int moveCount = 0; moveCount < distance; moveCount++)
@@ -152,7 +156,7 @@ public class BasicRobot implements Robot {
 				}
 				catch (Exception e)
 				{
-					//System.out.println("Robot outside of maze.");
+					
 				}
 			}
 		}
@@ -162,7 +166,8 @@ public class BasicRobot implements Robot {
 	@Override
 	public int[] getCurrentPosition() throws Exception {
 		try {
-		return control.getCurrentPosition(); }
+		return control.getCurrentPosition(); 
+		}
 		catch (Exception e)
 		{
 			
@@ -187,17 +192,14 @@ public class BasicRobot implements Robot {
 		}
 		catch (Exception e)
 		{
-			//System.out.println("Robot outside of maze.");
+			
 		}
 		return atExit;
 	}
 
 	@Override
 	public boolean canSeeExit(Direction direction) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		assert batteryLevel >= 1 : " not enough energy to sense";
-		//if(batteryLevel < 5)
-			//noEnergyGameLost();
+		assert batteryLevel >= 1 : " not enough energy to sense exit";
 		if(distanceToObstacle(direction) == Integer.MAX_VALUE)
 			return true;
 		else
@@ -213,7 +215,7 @@ public class BasicRobot implements Robot {
 		}
 		catch (Exception e)
 		{
-			System.out.println("Robot outside of maze.");
+			
 		}
 		return inRoom;
 	}
@@ -256,7 +258,6 @@ public class BasicRobot implements Robot {
 
 	@Override
 	public float getEnergyForFullRotation() {
-		// TODO Auto-generated method stub
 		return energyForFullRotation;
 	}
 
@@ -284,8 +285,6 @@ public class BasicRobot implements Robot {
 	 */
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
 		assert batteryLevel >= 1 :  " not enough battery";
-		//if(batteryLevel < 5)
-			//noEnergyGameLost();
 		Cells cells = config.getMazecells();
 		int distCount = 0;
 		try 
@@ -306,7 +305,7 @@ public class BasicRobot implements Robot {
 		
 		catch (Exception e)
 		{
-			System.out.println("Robot is outside of the maze. ");
+			
 		}
 		
 		return distCount;
@@ -399,6 +398,11 @@ public class BasicRobot implements Robot {
 			return false;
 	}
 	
+	/**
+	 * If the robot does not have enough energy to move anymore, there is no way 
+	 * to win the game. So, the control goes from the playing state to the 
+	 * "winning" state, telling the user they lost because their robot died.
+	 */
 	public void noEnergyGameLost()
 	{
 		control.switchFromPlayingToWinning(this.getOdometerReading());

@@ -105,17 +105,14 @@ public class ManualDriver implements RobotDriver {
 		int[] newPos;
 		try {
 			oldPos = robot.getCurrentPosition();
-			System.out.println("old " + oldPos[0] + " " + oldPos[1]);
 			robot.move(1, true);
 			newPos = robot.getCurrentPosition();
-			System.out.println("new " + newPos[0] + " " + newPos[1]);
 			if(oldPos[0] != newPos[0] || oldPos[1] != newPos[1]) //If the driver's robot has actually moved, takes energy.
 				totalEnergyConsumed += robot.getEnergyForStepForward();
 		}
 		catch (Exception e)
 		{
-			//e.printStackTrace();
-			//System.out.println("1Robot outside of maze.");
+			
 		}
 		
 	}
@@ -127,7 +124,7 @@ public class ManualDriver implements RobotDriver {
 	 */
 	public void turn(Robot.Turn turn) {
 		robot.rotate(turn);
-		totalEnergyConsumed += (1/4)*robot.getEnergyForFullRotation();
+		totalEnergyConsumed += (0.25)*robot.getEnergyForFullRotation();
 	}
 	
 	/**
@@ -141,9 +138,17 @@ public class ManualDriver implements RobotDriver {
 		}
 		catch (Exception e)
 		{
-			System.out.println("2Robot outside of maze.");
+			
 		}
 		return null;
+	}
+	
+	/**
+	 * Used by controller to reset total energy consumed to 0.
+	 */
+	public void resetEnergyConsumption()
+	{
+		totalEnergyConsumed = 0;
 	}
 
 }

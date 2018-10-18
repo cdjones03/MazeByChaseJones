@@ -153,9 +153,11 @@ public class Controller {
         currentState = states[2];
         currentState.setMazeConfiguration(config);
         currentState.start(this, panel);
-        this.getRobot().setBatteryLevel(10);
+        //Reset robot and driver for games other than first.
+        this.getRobot().setBatteryLevel(3000);
         this.getRobot().resetOdometer();
         this.getDriver().setRobot(this.getRobot());
+        ((ManualDriver)this.getDriver()).resetEnergyConsumption();
     }
     /**
      * Switches the controller to the final screen

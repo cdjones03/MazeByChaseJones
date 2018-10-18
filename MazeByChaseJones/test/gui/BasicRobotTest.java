@@ -20,33 +20,10 @@ import generation.Order.Builder;
 /**
  * 
  * @author chasejones
- * -can use level 0 for some tests, need higher level (i.e. rooms) for some
- * Test ideas:
- * 	Rotate
- * 		-right, left, around
- * 		-actually changes energy
- * 		-won't turn if not enough energy
- * 	Move
- * 		-forward
- * 		-actually changes energy
- * 		-won't move without enough energy
  * 
- * isAtExit
- * 		-true if at exit, false if not
- * 
- * canSeeExit
- * 		-true if can see, false if not
- * 
- * getOdometerReading
- * 		-actually gets correct odometer reading
- * 
- * isInsideRoom
- * 		-true if yes, false if no
- * 
- * getBatteryLevel
- * 		-actually gets correct battery level
- * 
- * hasDistance sensor
+ * Tests the BasicRobot.java class and its various methods
+ * for functionality. Tests features like its movements and
+ * rotations, energy consumption, odometer, etc.
  */
 public class BasicRobotTest {
 	
@@ -108,7 +85,6 @@ public class BasicRobotTest {
 			robot.move(1, false);
 			robot.rotate(Robot.Turn.RIGHT);
 			newPos = robot.getCurrentPosition();
-			System.out.println(newPos[0] + " " + newPos[1]);
 		}
 		assertEquals(1, robot.getOdometerReading());
 		robot.resetOdometer();
@@ -116,17 +92,23 @@ public class BasicRobotTest {
 		}
 		catch (Exception e)
 		{
-			System.out.println("Robot outside of maze.");
+			
 		}
 	}
 	
-	
+	/**
+	 * Tests that the robot starts with 3000 energy.
+	 */
 	@Test
 	public void testEnergy()
 	{
 		assertEquals(3000, robot.getBatteryLevel(), 0);
 	}
 	
+	/**
+	 * Tests the robot's rotate right functionality. Should change its
+	 * direction to clockwise from the original one.
+	 */
 	@Test
 	public void testRotateRight()
 	{
@@ -135,6 +117,10 @@ public class BasicRobotTest {
 		assertEquals(curDir.rotateClockwise(), robot.getCurrentDirection());
 	}
 	
+	/**
+	 * Tests the robot's rotate left functionality. Should change its
+	 * direction to counter clockwise from the original one.
+	 */
 	@Test
 	public void testRotateLeft()
 	{
@@ -142,7 +128,10 @@ public class BasicRobotTest {
 		robot.rotate(Robot.Turn.LEFT);
 		assertEquals(curDir.rotateCounterClockwise(), robot.getCurrentDirection());
 	}
-	
+	/**
+	 * Tests the robot's rotate around functionality. Should change its
+	 * direction to opposite the original one.
+	 */
 	@Test
 	public void testRotateAround()
 	{
@@ -151,15 +140,23 @@ public class BasicRobotTest {
 		assertEquals(curDir.oppositeDirection(), robot.getCurrentDirection());
 	}
 	
+	/**
+	 * Tests that a robot's battery level is actually changed after a
+	 * rotate operation.
+	 */
 	@Test
 	public void rotateChangesEnergy()
 	{
 		float newEnergy = robot.getBatteryLevel();
 		robot.rotate(Robot.Turn.RIGHT);
-		newEnergy -= (1/4)*robot.getEnergyForFullRotation();
+		newEnergy -= (0.25)*robot.getEnergyForFullRotation();
 		assertEquals(newEnergy, robot.getBatteryLevel(), 0);
 	}
 	
+	/**
+	 * Tests that a robot without enough energy to rotate that 
+	 * tries to rotate does not successfully do so.
+	 */
 	@Test
 	public void rotateWithoutEnoughEnergy()
 	{
@@ -169,6 +166,10 @@ public class BasicRobotTest {
 		assertEquals(dir, robot.getCurrentDirection());
 	}
 	
+	/**
+	 * Tests that moving the robot, testing its .move function,
+	 * actually changes its position.
+	 */
 	@Test
 	public void testMoveOneStepForward()
 	{
@@ -185,11 +186,15 @@ public class BasicRobotTest {
 			}
 			catch (Exception e)
 			{
-				System.out.println("Robot outside of maze.");
+				
 			}
 		
 	}
 	
+	/**
+	 * Tests that moving the robot manually, testing its .move function,
+	 * actually changes its position.
+	 */
 	@Test
 	public void testMoveOneStepForwardManual()
 	{
@@ -206,11 +211,16 @@ public class BasicRobotTest {
 			}
 			catch (Exception e)
 			{
-				System.out.println("Robot outside of maze.");
+				
 			}
 		
 	}
 	
+	/**
+	 * Tests the .isAtExit method. Gets the maze's exit from the maze's
+	 * Distances, sets the robot's position to there, then
+	 * tests the method.
+	 */
 	@Test
 	public void isActuallyAtExit()
 	{
@@ -220,12 +230,22 @@ public class BasicRobotTest {
 		assertTrue(robot.isAtExit());
 	}
 	
+	/**
+	 * A robot should never spawn next to the exit, so this test
+	 * makes sure the isAtExit() method actually returns false when 
+	 * the robot is at the start.
+	 */
 	@Test
 	public void isNotAtExit()
 	{
 		assertFalse(robot.isAtExit());
 	}
 	
+	/**
+	 * Tests that a robot at the exit can actually see the exit. Gets
+	 * the maze's exit from the Distances computed and then sets the robot's
+	 * location to there.
+	 */
 	@Test
 	public void canSeeExit()
 	{
@@ -237,6 +257,11 @@ public class BasicRobotTest {
 		assertTrue(robot.canSeeExit(Direction.FORWARD));
 	}
 	
+	/**
+	 * Tests the .isInsideRoom method. Searches the maze until it finds a
+	 * position inside a room, then sets the robot's position to there
+	 * and checks if the robot is in a room using its own method.
+	 */
 	@Test
 	public void robotInRoom()
 	{
@@ -262,6 +287,11 @@ public class BasicRobotTest {
 		assertTrue(robot.isInsideRoom());
 	}
 	
+	/**
+	 * Tests the .isInsideRoom method. Searches the maze until it finds a
+	 * position not inside a room, then sets the robot's position to there
+	 * and checks if the robot is not in a room using its own method.
+	 */
 	@Test
 	public void robotNotInRoom()
 	{
@@ -286,6 +316,9 @@ public class BasicRobotTest {
 		assertFalse(robot.isInsideRoom());
 	}
 	
+	/**
+	 * Tests that a generic basicRobot has a distance sensor.
+	 */
 	@Test
 	public void testHasDistanceSensor()
 	{
@@ -293,12 +326,21 @@ public class BasicRobotTest {
 		assertTrue(robot.hasDistanceSensor(dir));
 	}
 	
+	/**
+	 * Tests that a robot cannot see the exit. Since this is tested
+	 * when the robot is at the start of the maze, it should never be
+	 * positioned next to the exit, making the test work.
+	 */
 	@Test
 	public void testCannotSeeExit()
 	{
 		assertFalse(robot.canSeeExit(Direction.FORWARD));
 	}
 	
+	/**
+	 * Tests the translateDir() method, which takes the robot's current
+	 * direction and maps it to a cardinal direction.
+	 */
 	@Test
 	public void testTranslateDirection()
 	{
