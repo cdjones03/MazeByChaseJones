@@ -137,7 +137,13 @@ public class SimpleKeyListener implements KeyListener {
 		//Other operations go through the current state.
 		if(uikey == UserInput.Left || uikey == UserInput.Right || uikey == UserInput.Up)
 		{
-			((ManualDriver)controller.getDriver()).manualKeyDown(uikey); 
+			//((ManualDriver)controller.getDriver()).manualKeyDown(uikey); 
+			try {
+			((Wizard)controller.getWizard()).drive2Exit(); }
+			catch (Exception e)
+			{
+				
+			}
 		}
 		else
 			controller.keyDown(uikey, value);

@@ -93,7 +93,9 @@ public class Controller {
         //For P3
         robot = new BasicRobot();
         driver = new ManualDriver();
+        wizard = new Wizard();
         driver.setRobot(robot);
+        wizard.setRobot(robot);
     }
     
     public void setFileName(String fileName) {
@@ -156,7 +158,8 @@ public class Controller {
         //Reset robot and driver for games other than first.
         this.getRobot().setBatteryLevel(3000);
         this.getRobot().resetOdometer();
-        this.getDriver().setRobot(this.getRobot());
+        //this.getDriver().setRobot(this.getRobot());
+        this.getWizard().setRobot(this.getRobot());
         ((ManualDriver)this.getDriver()).resetEnergyConsumption();
     }
     /**
@@ -204,6 +207,8 @@ public class Controller {
      */
     RobotDriver driver;
     
+    Wizard wizard;
+    
     /**
      * Sets the robot and robot driver
      * @param robot
@@ -224,6 +229,11 @@ public class Controller {
      */
     public RobotDriver getDriver() {
         return driver;
+    }
+    
+    public Wizard getWizard()
+    {
+    	return wizard;
     }
     /**
      * Provides access to the maze configuration. 

@@ -80,6 +80,7 @@ public class StatePlaying extends DefaultState {
         // keep the reference to the controller to be able to call method to switch the state
         control = controller;
         // keep the reference to the panel for drawing
+        (control.getWizard()).setDistance(mazeConfig.getMazedists());
         this.panel = panel;
         //
         // adjust internal state of maze model
@@ -156,6 +157,7 @@ public class StatePlaying extends DefaultState {
             break;
         case Up: // move forward
         	//driver.moveForward();
+        	
             walk(1);
             // check termination, did we leave the maze?
             if (isOutside(px,py)) {

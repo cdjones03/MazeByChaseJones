@@ -37,6 +37,11 @@ public class BasicRobot implements Robot {
 	final private float energyForStepForward = 5;
 	final private float initialBatteryLevel = 3000;
 	MazeConfiguration config;
+	
+	public Controller getControl()
+	{
+		return control;
+	}
 
 	/**
 	 * Constructor for a BasicRobot. Initializes the battery and odometer,
@@ -283,14 +288,16 @@ public class BasicRobot implements Robot {
 	 * 	is returned as the number of steps it takes to get there.
 	 * 4. If the robot is looking through the exit, returns Infinity.
 	 */
-	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
+	public int distanceToObstacle(Direction direction) {// throws UnsupportedOperationException {
 		assert batteryLevel >= 1 :  " not enough battery";
 		Cells cells = config.getMazecells();
 		int distCount = 0;
 		try 
 		{
+			System.out.println("first");
 			int[] curPos = getCurrentPosition();
 			Wall wall = new Wall(curPos[0], curPos[1], translateDir(direction));
+			System.out.println(curPos[0] + " " + curPos[1] + " " + translateDir(direction));
 
 			int[] newPos = curPos;
 			while(cells.canGo(wall) && !(cells.isExitPosition(newPos[0], newPos[1])))
@@ -305,7 +312,7 @@ public class BasicRobot implements Robot {
 		
 		catch (Exception e)
 		{
-			
+			System.out.println("caught exception");
 		}
 		
 		return distCount;
