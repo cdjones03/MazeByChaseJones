@@ -34,6 +34,8 @@ public class StateTitle extends DefaultState {
     MazePanel panel;
     Controller control;
     
+    MazePanel boxPanel;
+    
     /** filename is null: generate a maze. 
      * filename is set to a name of an xml file with a maze: load maze from file
      * The user may play several rounds, so filename is reset to null once
@@ -82,18 +84,22 @@ public class StateTitle extends DefaultState {
      * @param controller needed to be able to switch states, not null
      * @param panel is the UI entity to produce the title screen on 
      */
-    public void start(Controller controller, MazePanel panel) {
+    public void start(Controller controller, MazePanel panel, MazePanel boxPanel) {
         started = true;
         // keep the reference to the controller to be able to call method to switch the state
         control = controller;
         // keep the reference to the panel for drawing
         this.panel = panel;
+        this.boxPanel = boxPanel;
         // init mazeview, controller not needed for title
         view = new MazeView(null);
         // if given a filename, show a message and move to the loading screen
         // otherwise, show message that we wait for the skill level for input
         view.redrawTitle(panel,filename);
+        view.drawBoxes(boxPanel);
+        boxPanel.update();
         panel.update(); // as drawing is complete, make screen update happen
+        
         
         if (filename != null) {
             // wait 3 sec to give user

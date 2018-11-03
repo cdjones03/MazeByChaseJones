@@ -1,9 +1,16 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 
 import gui.Constants.StateGUI;
 
@@ -16,14 +23,44 @@ import gui.Constants.StateGUI;
  * @author Peter Kemper
  *
  */
-public class MazeView {
+public class MazeView implements ActionListener{
 
 	private StateGenerating controllerState; // used for generating screen
-    
+	//ActionListener l = new ActionListener();
+    MazePanel mazePanel;
+    MazePanel bPanel;
     public MazeView(StateGenerating c) {
         super() ;
         controllerState = c ;
     }
+    
+    public void drawBoxes(MazePanel boxPanel)
+	{
+    	bPanel = boxPanel;
+    	Graphics g = boxPanel.getBufferGraphics();
+    	g.setColor(Color.white);
+    	g.fillRect(0, 0, Constants.VIEW_WIDTH, 50);
+    	g.setFont(smallBannerFont);
+    	g.setColor(Color.red);
+		boxPanel.add(new Button("Test1"));
+    	
+    	Integer[] skillLevels = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    	JComboBox skillBox = new JComboBox(skillLevels);
+    	skillBox.setSelectedIndex(0);
+    	/*
+    	skillBox.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent event) {
+    			JComboBox<Integer> combo = (JComboBox<Integer>) event.getSource();
+    	        int selectedBook = (int) combo.getSelectedItem();
+    			}});*/
+    	boxPanel.add(skillBox);
+    	skillBox.setLightWeightPopupEnabled (false);
+        boxPanel.setVisible(true);
+    	boxPanel.revalidate();
+    	boxPanel.repaint();
+	}
+    
     /**
      * Draws the title screen, screen content is hard coded
      * @param panel holds the graphics for the off-screen image
@@ -32,11 +69,12 @@ public class MazeView {
      */
     public void redrawTitle(MazePanel panel, String filename) {
     	Graphics g = panel.getBufferGraphics() ;
+    	mazePanel = panel;
         if (null == g) {
             System.out.println("MazeView.redrawTitle: can't get graphics object to draw on, skipping redraw operation") ;
         }
         else {
-            redrawTitle(g,filename);
+            redrawTitle(g,filename, panel);
         }
     }
     /**
@@ -45,10 +83,10 @@ public class MazeView {
      * @param filename is a string put on display for the file
      * that contains the maze, can be null
      */
-    private void redrawTitle(Graphics gc, String filename) {
+    private void redrawTitle(Graphics gc, String filename, MazePanel panel) {
         // produce white background
         gc.setColor(Color.white);
-        gc.fillRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
+        gc.fillRect(0, 50, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
         // write the title 
         gc.setFont(largeBannerFont);
         FontMetrics fm = gc.getFontMetrics();
@@ -67,6 +105,7 @@ public class MazeView {
         	centerString(gc, fm, "To start, select a skill level.", 250);
         	centerString(gc, fm, "(Press a number from 0 to 9,", 300);
         	centerString(gc, fm, "or a letter from A to F)", 320);
+        		
         }
         else {
         	// message if maze is loaded from file
@@ -82,7 +121,8 @@ public class MazeView {
 		//dbg("redraw") ;
 		switch (state) {
 		case STATE_TITLE:
-			redrawTitle(gc,null);
+			redrawTitle(gc,null, mazePanel);
+			drawBoxes(bPanel);
 			break;
 		case STATE_GENERATING:
 			redrawGenerating(gc);
@@ -218,5 +258,13 @@ public class MazeView {
 
 	final Font largeBannerFont = new Font("TimesRoman", Font.BOLD, 48);
 	final Font smallBannerFont = new Font("TimesRoman", Font.BOLD, 16);
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 
 }

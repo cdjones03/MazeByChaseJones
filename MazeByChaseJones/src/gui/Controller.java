@@ -1,6 +1,9 @@
 package gui;
 
 import gui.Constants.UserInput;
+
+import javax.swing.JFrame;
+
 import generation.CardinalDirection;
 import generation.MazeConfiguration;
 import generation.Order;
@@ -78,6 +81,8 @@ public class Controller {
      */
     boolean perfect;
     
+    MazePanel boxPanel;
+    
     public Controller() {
     	states = new State[4];
         states[0] = new StateTitle();
@@ -96,6 +101,8 @@ public class Controller {
         wizard = new Wizard();
         driver.setRobot(robot);
         wizard.setRobot(robot);
+        
+        boxPanel = new MazePanel();
     }
     
     public void setFileName(String fileName) {
@@ -110,6 +117,10 @@ public class Controller {
     public MazePanel getPanel() {
         return panel;
     }
+    
+    public MazePanel getBoxPanel() {
+    	return boxPanel;
+    }
     /**
      * Starts the controller and begins the game 
      * with the title screen.
@@ -117,7 +128,7 @@ public class Controller {
     public void start() { 
         currentState = states[0]; // initial state is the title state
         currentState.setFileName(fileName); // can be null
-        currentState.start(this, panel);
+        ((StateTitle)currentState).start(this, panel, boxPanel);
         fileName = null; // reset after use
     }
     /**
@@ -177,7 +188,7 @@ public class Controller {
      */
     public void switchToTitle() {
         currentState = states[0];
-        currentState.start(this, panel);
+        ((StateTitle)currentState).start(this, panel, boxPanel);
   
     }
     

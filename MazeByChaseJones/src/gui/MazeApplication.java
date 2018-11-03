@@ -5,6 +5,7 @@ package gui;
 
 import generation.Order;
 
+import java.awt.BorderLayout;
 import java.awt.event.KeyListener;
 import java.io.File;
 
@@ -32,6 +33,7 @@ public class MazeApplication extends JFrame {
 	 */
 	public MazeApplication() {
 		init(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	/**
@@ -104,17 +106,22 @@ public class MazeApplication extends JFrame {
 	private void init(String parameter) {
 	    // instantiate a game controller and add it to the JFrame
 	    controller = createController(parameter);
-		add(controller.getPanel()) ;
+	    setLayout(new BorderLayout());
+		add(controller.getPanel(), BorderLayout.CENTER) ;
+		add(controller.getBoxPanel(), BorderLayout.NORTH);
 		// instantiate a key listener that feeds keyboard input into the controller
 		// and add it to the JFrame
 		KeyListener kl = new SimpleKeyListener(this, controller) ;
 		addKeyListener(kl) ;
 		// set the frame to a fixed size for its width and height and put it on display
-		setSize(400, 400) ;
+		setSize(600, 600) ;
+		controller.getBoxPanel().setBounds(0, 0, Constants.VIEW_WIDTH, 50);
+		controller.getPanel().setBounds(0, 50, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
 		setVisible(true) ;
 		// focus should be on the JFrame of the MazeApplication and not on the maze panel
 		// such that the SimpleKeyListener kl is used
 		setFocusable(true) ;
+		revalidate();
 		// start the game, hand over control to the game controller
 		controller.start();
 		//controller.setRobotAndDriver(new BasicRobot(), new ManualDriver());
