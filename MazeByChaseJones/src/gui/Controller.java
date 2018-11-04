@@ -142,9 +142,9 @@ public class Controller {
     	boxPanel.setVisible(false);
     	//boxPanel.invalidate();
         currentState = states[1];
-        currentState.setSkillLevel(skillLevel);
-        currentState.setBuilder(builder); 
-        currentState.setPerfect(perfect); 
+        currentState.setSkillLevel(((StateTitle)states[0]).getSkill());
+        currentState.setBuilder(((StateTitle)states[0]).getBuilder());
+        currentState.setPerfect(perfect);
         currentState.start(this, panel);
     }
     /**

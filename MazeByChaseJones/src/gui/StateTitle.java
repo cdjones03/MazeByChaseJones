@@ -1,5 +1,6 @@
 package gui;
 
+import generation.Order;
 import gui.Constants.UserInput;
 
 /**
@@ -150,6 +151,18 @@ public class StateTitle extends DefaultState {
             System.out.println("StateTitle:unexpected command:" + key);
         }    
         return true;
+    }
+    
+    public String getDriver() {
+    	return view.getChosenDriver();
+    }
+    
+    public Order.Builder getBuilder() {
+    	return view.getChosenMazeAlg();
+    }
+    
+    public int getSkill() {
+    	return view.getSkill();
     }
 
 }

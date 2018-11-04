@@ -61,6 +61,8 @@ public class MazeView implements ActionListener{
         super() ;
         controllerState = c ;
         this.getStart = false;
+        this.skill = 0;
+        this.chosenMazeAlg = Builder.DFS;
     }
     
     public void drawBoxes(MazePanel boxPanel, Controller controller)

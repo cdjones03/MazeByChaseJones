@@ -81,6 +81,7 @@ public class StatePlaying extends DefaultState {
         control = controller;
         // keep the reference to the panel for drawing
         (control.getWizard()).setDistance(mazeConfig.getMazedists());
+        (control.getWizard()).setCells(mazeConfig.getMazecells());
         this.panel = panel;
         //
         // adjust internal state of maze model

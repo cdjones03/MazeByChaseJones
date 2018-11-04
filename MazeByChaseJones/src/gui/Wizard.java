@@ -1,9 +1,11 @@
 package gui;
 
 import generation.Distance;
+import generation.Wall;
 import gui.Robot.Direction;
 import gui.Robot.Turn;
 import generation.CardinalDirection;
+import generation.Cells;
 
 
 /**
@@ -15,6 +17,7 @@ public class Wizard {
 
 	private Robot robot;
 	private Distance dist;
+	private Cells cells;
 	
 	public Wizard()
 	{
@@ -26,31 +29,35 @@ public class Wizard {
 		dist = distance;
 	}
 	
+	public void setCells(Cells cell) {
+		cells = cell;
+	}
+	
 	public void setRobot(Robot r) {
 		// TODO Auto-generated method stub
 		robot = r;
 	}
 	
-	public int[] getDistPos(Direction dir) throws Exception
+	public int getDistDir(Direction dir) throws Exception
 	{
 		int[] curPos = robot.getCurrentPosition();
 		int[] newPos = curPos;
-		CardinalDirection carDir = robot.getCurrentDirection();
-		switch(carDir)
+		int checkDist = dist.getDistanceValue(curPos[0], curPos[1]);
+		switch(robot.getCurrentDirection())
 		{
 		case North :
 			switch(dir)
 			{
 			case FORWARD :
-				newPos[1] -= 1;
+				checkDist = dist.getDistanceValue(curPos[0], curPos[1]+1);
 				break;
 			
 			case RIGHT :
-				newPos[0] += 1;
+				checkDist = dist.getDistanceValue(curPos[0]+1, curPos[1]);
 				break;
 				
 			case LEFT : 
-				newPos[0] -= 1;
+				checkDist = dist.getDistanceValue(curPos[0]-1, curPos[1]);
 				break;
 			}
 			break;
@@ -59,15 +66,15 @@ public class Wizard {
 			switch(dir)
 			{
 			case FORWARD :
-				newPos[0] -= 1;
+				checkDist = dist.getDistanceValue(curPos[0]-1, curPos[1]);
 				break;
 			
 			case RIGHT :
-				newPos[1] -= 1;
+				checkDist = dist.getDistanceValue(curPos[0], curPos[1]+1);
 				break;
 				
 			case LEFT : 
-				newPos[1] += 1;
+				checkDist = dist.getDistanceValue(curPos[0], curPos[1]-1);
 				break;
 			}
 			break;
@@ -76,15 +83,15 @@ public class Wizard {
 			switch(dir)
 			{
 			case FORWARD :
-				newPos[0] += 1;
+				checkDist = dist.getDistanceValue(curPos[0]+1, curPos[1]);
 				break;
 			
 			case RIGHT :
-				newPos[1] += 1;
+				checkDist = dist.getDistanceValue(curPos[0], curPos[1]-1);
 				break;
 				
 			case LEFT : 
-				newPos[1] -= 1;
+				checkDist = dist.getDistanceValue(curPos[0], curPos[1]+1);
 				break;
 			}
 			break;
@@ -93,15 +100,15 @@ public class Wizard {
 			switch(dir)
 			{
 			case FORWARD :
-				newPos[1] += 1;
+				checkDist = dist.getDistanceValue(curPos[0], curPos[1]-1);
 				break;
 			
 			case RIGHT :
-				newPos[0] -= 1;
+				checkDist = dist.getDistanceValue(curPos[0]-1, curPos[1]);
 				break;
 				
 			case LEFT : 
-				newPos[0] += 1;
+				checkDist = dist.getDistanceValue(curPos[0]+1, curPos[1]);
 				break;
 			}
 			break;
@@ -109,17 +116,18 @@ public class Wizard {
 		default :
 			break;
 		}
-		return newPos;
+		return checkDist;
 	}
 	
 	public boolean drive2Exit() throws Exception {
 		//System.out.println("hello");
 		//robot.move(1, true);
-		((BasicRobot) robot).getControl().setCurrentPosition(2, 2);
+		//((BasicRobot) robot).getControl().setCurrentPosition(2, 2);
 		Direction moveDir = Direction.FORWARD;
 		int[] newPos = robot.getCurrentPosition();
 		//EAST WEST SOUTH NORTH
 		int checkDist = dist.getDistanceValue(newPos[0], newPos[1]);
+		/*
 		System.out.println(dist.getDistanceValue(newPos[0], newPos[1]));
 		System.out.println(dist.getDistanceValue(newPos[0]+1, newPos[1]));
 		System.out.println(dist.getDistanceValue(newPos[0]-1, newPos[1]));
@@ -131,36 +139,34 @@ public class Wizard {
 		int disSo = dist.getDistanceValue(newPos[0], newPos[1]+1);
 		int disEa = dist.getDistanceValue(newPos[0]+1, newPos[1]);
 		int disWe = dist.getDistanceValue(newPos[0]-1, newPos[1]);
+		*/
+		
+		int curDist = dist.getDistanceValue(newPos[0], newPos[1]);
 		
 		while(robot.getBatteryLevel() >= 5)
 		{
 			checkDist = dist.getDistanceValue(newPos[0], newPos[1]);
+			curDist = dist.getDistanceValue(newPos[0], newPos[1]);
 			int[] curPos = robot.getCurrentPosition();
 			System.out.println("curPos " + curPos[0] + curPos[1]);
 			
-			//int distTo = -1;
-			//distTo = robot.distanceToObstacle(Direction.FORWARD);
-			//System.out.println("distforward " + distTo);
 			
-			newPos = getDistPos(Direction.FORWARD);
-			System.out.println("newPos1 " + newPos[0] + newPos[1]);
-			if(dist.getDistanceValue(newPos[0], newPos[1]) < checkDist)
+			checkDist = getDistDir(Direction.FORWARD);
+			if(checkDist < curDist && cells.canGo(new Wall(curPos[0], curPos[1], ((BasicRobot) robot).translateDir(Direction.FORWARD))))
 			{
 				System.out.println("forward");
 				moveDir = Direction.FORWARD;
 			}
 			
-			newPos = getDistPos(Direction.RIGHT);
-			System.out.println("newPos2 " + newPos[0] + newPos[1]);
-			if(dist.getDistanceValue(newPos[0], newPos[1]) < checkDist)
+			checkDist = getDistDir(Direction.RIGHT);
+			if(checkDist < curDist && cells.canGo(new Wall(curPos[0], curPos[1], ((BasicRobot) robot).translateDir(Direction.RIGHT))))
 			{
 				System.out.println("right");
 				moveDir = Direction.RIGHT;
 			}
 			
-			newPos = getDistPos(Direction.LEFT);
-			System.out.println("newPos3 " + newPos[0] + newPos[1]);
-			if(dist.getDistanceValue(newPos[0], newPos[1]) < checkDist)
+			checkDist = getDistDir(Direction.LEFT);
+			if(checkDist < curDist && cells.canGo(new Wall(curPos[0], curPos[1], ((BasicRobot) robot).translateDir(Direction.LEFT))))
 			{
 				System.out.println("left");
 				moveDir = Direction.LEFT;
