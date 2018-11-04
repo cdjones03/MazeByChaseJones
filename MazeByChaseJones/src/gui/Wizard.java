@@ -118,6 +118,7 @@ public class Wizard {
 		((BasicRobot) robot).getControl().setCurrentPosition(2, 2);
 		Direction moveDir = Direction.FORWARD;
 		int[] newPos = robot.getCurrentPosition();
+		//EAST WEST SOUTH NORTH
 		int checkDist = dist.getDistanceValue(newPos[0], newPos[1]);
 		System.out.println(dist.getDistanceValue(newPos[0], newPos[1]));
 		System.out.println(dist.getDistanceValue(newPos[0]+1, newPos[1]));
@@ -133,18 +134,17 @@ public class Wizard {
 		
 		while(robot.getBatteryLevel() >= 5)
 		{
-			robot.move(1, true);
-		
+			checkDist = dist.getDistanceValue(newPos[0], newPos[1]);
 			int[] curPos = robot.getCurrentPosition();
 			System.out.println("curPos " + curPos[0] + curPos[1]);
 			
+			//int distTo = -1;
+			//distTo = robot.distanceToObstacle(Direction.FORWARD);
+			//System.out.println("distforward " + distTo);
+			
 			newPos = getDistPos(Direction.FORWARD);
 			System.out.println("newPos1 " + newPos[0] + newPos[1]);
-			int distTo = -1;
-			distTo = robot.distanceToObstacle(Direction.FORWARD);
-			System.out.println("distforward " + distTo);
-			
-			if(robot.distanceToObstacle(Direction.FORWARD) >= 1 && dist.getDistanceValue(newPos[0], newPos[1]) < checkDist)
+			if(dist.getDistanceValue(newPos[0], newPos[1]) < checkDist)
 			{
 				System.out.println("forward");
 				moveDir = Direction.FORWARD;
@@ -152,7 +152,7 @@ public class Wizard {
 			
 			newPos = getDistPos(Direction.RIGHT);
 			System.out.println("newPos2 " + newPos[0] + newPos[1]);
-			if(robot.distanceToObstacle(Direction.RIGHT) >= 1 && dist.getDistanceValue(newPos[0], newPos[1]) < checkDist)
+			if(dist.getDistanceValue(newPos[0], newPos[1]) < checkDist)
 			{
 				System.out.println("right");
 				moveDir = Direction.RIGHT;
@@ -160,7 +160,7 @@ public class Wizard {
 			
 			newPos = getDistPos(Direction.LEFT);
 			System.out.println("newPos3 " + newPos[0] + newPos[1]);
-			if(robot.distanceToObstacle(Direction.LEFT) >= 1 && dist.getDistanceValue(newPos[0], newPos[1]) < checkDist)
+			if(dist.getDistanceValue(newPos[0], newPos[1]) < checkDist)
 			{
 				System.out.println("left");
 				moveDir = Direction.LEFT;

@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
+import generation.Order;
+import generation.Order.Builder;
 import gui.Constants.StateGUI;
 
 /**
@@ -35,7 +37,7 @@ public class MazeView implements ActionListener{
     
     int skill;
     String chosenDriver;
-    String chosenMazeAlg;
+    Builder chosenMazeAlg;
     boolean getStart;
     
     public int getSkill()
@@ -47,7 +49,7 @@ public class MazeView implements ActionListener{
     	return chosenDriver;
     }
     
-    public String getChosenMazeAlg() {
+    public Order.Builder getChosenMazeAlg() {
     	return chosenMazeAlg;
     }
     
@@ -105,13 +107,13 @@ public class MazeView implements ActionListener{
     	driverBox.setLightWeightPopupEnabled (false);
     	driverBox.setOpaque(true);
     	
-    	String[] mazeAlg = {"DFS", "Prim", "Eller"};
+    	Order.Builder[] mazeAlg = {Order.Builder.DFS, Order.Builder.Prim, Order.Builder.Eller};
     	JComboBox algBox = new JComboBox(mazeAlg);
     	algBox.addActionListener(new ActionListener() {
     		@Override
     		public void actionPerformed(ActionEvent event) {
-    			JComboBox<String> combo = (JComboBox<String>) event.getSource();
-    	        chosenMazeAlg = (String) combo.getSelectedItem();
+    			JComboBox<Order.Builder> combo = (JComboBox<Order.Builder>) event.getSource();
+    	        chosenMazeAlg = (Order.Builder) combo.getSelectedItem();
     			}});
     	boxPanel.add(algBox);
     	algBox.setLightWeightPopupEnabled (false);
