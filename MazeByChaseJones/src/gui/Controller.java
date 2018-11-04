@@ -139,6 +139,8 @@ public class Controller {
      * @param skillLevel, 0 <= skillLevel, size of maze to be generated
      */
     public void switchFromTitleToGenerating(int skillLevel) {
+    	boxPanel.setVisible(false);
+    	//boxPanel.invalidate();
         currentState = states[1];
         currentState.setSkillLevel(skillLevel);
         currentState.setBuilder(builder); 
@@ -191,7 +193,8 @@ public class Controller {
     public void switchToTitle() {
         currentState = states[0];
         ((StateTitle)currentState).start(this, panel, boxPanel);
-  
+        boxPanel.setVisible(true);
+        boxPanel.revalidate();
     }
     
     /**

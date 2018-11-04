@@ -115,6 +115,7 @@ public class MazeApplication extends JFrame {
 		addKeyListener(kl) ;
 		// set the frame to a fixed size for its width and height and put it on display
 		setSize(500, 500) ;
+		setResizable(false);
 		//controller.getBoxPanel().setBounds(0, 0, Constants.VIEW_WIDTH, 50);
 		//controller.getPanel().setBounds(0, 50, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
 		setVisible(true) ;

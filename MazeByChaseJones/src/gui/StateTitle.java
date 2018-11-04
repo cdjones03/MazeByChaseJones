@@ -96,7 +96,7 @@ public class StateTitle extends DefaultState {
         // if given a filename, show a message and move to the loading screen
         // otherwise, show message that we wait for the skill level for input
         view.redrawTitle(panel,filename);
-        view.drawBoxes(boxPanel);
+        view.drawBoxes(boxPanel, control);
         panel.update(); // as drawing is complete, make screen update happen
         boxPanel.update();
         
@@ -139,8 +139,12 @@ public class StateTitle extends DefaultState {
             value = 0;
         }
         // user types wrong key, just use 0 as a possible default value
+        /*
         if (key == UserInput.Start) {
             control.switchFromTitleToGenerating(value);
+        }*/
+        if (view.getStart()) {
+        	control.switchFromTitleToGenerating(view.getSkill());
         }
         else {
             System.out.println("StateTitle:unexpected command:" + key);

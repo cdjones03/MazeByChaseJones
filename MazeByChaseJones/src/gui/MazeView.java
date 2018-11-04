@@ -30,13 +30,40 @@ public class MazeView implements ActionListener{
 	//ActionListener l = new ActionListener();
     MazePanel mazePanel;
     MazePanel bPanel;
+    
+    Controller control;
+    
+    int skill;
+    String chosenDriver;
+    String chosenMazeAlg;
+    boolean getStart;
+    
+    public int getSkill()
+    {
+    	return skill;
+    }
+    
+    public String getChosenDriver() {
+    	return chosenDriver;
+    }
+    
+    public String getChosenMazeAlg() {
+    	return chosenMazeAlg;
+    }
+    
+    public boolean getStart() {
+    	return getStart;
+    }
+    
     public MazeView(StateGenerating c) {
         super() ;
         controllerState = c ;
+        this.getStart = false;
     }
     
-    public void drawBoxes(MazePanel boxPanel)
+    public void drawBoxes(MazePanel boxPanel, Controller controller)
 	{
+    	control = controller;
     	bPanel = boxPanel;
 		JButton startB = new JButton("Start");
 		startB.addActionListener(new ActionListener()
@@ -44,7 +71,7 @@ public class MazeView implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent event)
 			{
-				System.out.println("Hello");
+				control.switchFromTitleToGenerating(skill);
 			}
 				});
 		boxPanel.add(startB);
@@ -60,7 +87,7 @@ public class MazeView implements ActionListener{
     		@Override
     		public void actionPerformed(ActionEvent event) {
     			JComboBox<Integer> combo = (JComboBox<Integer>) event.getSource();
-    	        int skill = (int) combo.getSelectedItem();
+    	        skill = (int) combo.getSelectedItem();
     			}});
     	boxPanel.add(skillBox);
     	skillBox.setLightWeightPopupEnabled (false);
@@ -72,7 +99,7 @@ public class MazeView implements ActionListener{
     		@Override
     		public void actionPerformed(ActionEvent event) {
     			JComboBox<String> combo = (JComboBox<String>) event.getSource();
-    	        String chosenDriver = (String) combo.getSelectedItem();
+    	        chosenDriver = (String) combo.getSelectedItem();
     			}});
     	boxPanel.add(driverBox);
     	driverBox.setLightWeightPopupEnabled (false);
@@ -84,8 +111,7 @@ public class MazeView implements ActionListener{
     		@Override
     		public void actionPerformed(ActionEvent event) {
     			JComboBox<String> combo = (JComboBox<String>) event.getSource();
-    	        String chosenMazeAlg = (String) combo.getSelectedItem();
-    	        System.out.println(chosenMazeAlg);
+    	        chosenMazeAlg = (String) combo.getSelectedItem();
     			}});
     	boxPanel.add(algBox);
     	algBox.setLightWeightPopupEnabled (false);
@@ -157,7 +183,7 @@ public class MazeView implements ActionListener{
 		switch (state) {
 		case STATE_TITLE:
 			redrawTitle(gc,null, mazePanel);
-			drawBoxes(bPanel);
+			drawBoxes(bPanel, control);
 			break;
 		case STATE_GENERATING:
 			redrawGenerating(gc);
