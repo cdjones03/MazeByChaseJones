@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
@@ -37,25 +38,59 @@ public class MazeView implements ActionListener{
     public void drawBoxes(MazePanel boxPanel)
 	{
     	bPanel = boxPanel;
-    	Graphics g = boxPanel.getBufferGraphics();
-    	g.setColor(Color.white);
-    	g.fillRect(0, 0, Constants.VIEW_WIDTH, 50);
-    	g.setFont(smallBannerFont);
-    	g.setColor(Color.red);
-		boxPanel.add(new Button("Test1"));
-    	
+		JButton startB = new JButton("Start");
+		startB.addActionListener(new ActionListener()
+				{
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				System.out.println("Hello");
+			}
+				});
+		boxPanel.add(startB);
+		startB.setVisible(true);
+		startB.setOpaque(true);
+		boxPanel.update();
+		boxPanel.revalidate();
+		
     	Integer[] skillLevels = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     	JComboBox skillBox = new JComboBox(skillLevels);
     	skillBox.setSelectedIndex(0);
-    	/*
     	skillBox.addActionListener(new ActionListener() {
     		@Override
     		public void actionPerformed(ActionEvent event) {
     			JComboBox<Integer> combo = (JComboBox<Integer>) event.getSource();
-    	        int selectedBook = (int) combo.getSelectedItem();
-    			}});*/
+    	        int skill = (int) combo.getSelectedItem();
+    			}});
     	boxPanel.add(skillBox);
     	skillBox.setLightWeightPopupEnabled (false);
+    	skillBox.setOpaque(true);
+    	
+    	String[] driver = {"Manual", "Wizard", "Explorer", "WallFollower"};
+    	JComboBox driverBox = new JComboBox(driver);
+    	driverBox.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent event) {
+    			JComboBox<String> combo = (JComboBox<String>) event.getSource();
+    	        String chosenDriver = (String) combo.getSelectedItem();
+    			}});
+    	boxPanel.add(driverBox);
+    	driverBox.setLightWeightPopupEnabled (false);
+    	driverBox.setOpaque(true);
+    	
+    	String[] mazeAlg = {"DFS", "Prim", "Eller"};
+    	JComboBox algBox = new JComboBox(mazeAlg);
+    	algBox.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent event) {
+    			JComboBox<String> combo = (JComboBox<String>) event.getSource();
+    	        String chosenMazeAlg = (String) combo.getSelectedItem();
+    	        System.out.println(chosenMazeAlg);
+    			}});
+    	boxPanel.add(algBox);
+    	algBox.setLightWeightPopupEnabled (false);
+    	algBox.setOpaque(true);
+    	
         boxPanel.setVisible(true);
     	boxPanel.revalidate();
     	boxPanel.repaint();

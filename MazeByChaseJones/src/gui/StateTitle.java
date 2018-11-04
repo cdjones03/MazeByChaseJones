@@ -97,8 +97,9 @@ public class StateTitle extends DefaultState {
         // otherwise, show message that we wait for the skill level for input
         view.redrawTitle(panel,filename);
         view.drawBoxes(boxPanel);
-        boxPanel.update();
         panel.update(); // as drawing is complete, make screen update happen
+        boxPanel.update();
+        
         
         
         if (filename != null) {

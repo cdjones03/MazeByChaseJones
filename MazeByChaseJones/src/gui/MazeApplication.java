@@ -114,9 +114,9 @@ public class MazeApplication extends JFrame {
 		KeyListener kl = new SimpleKeyListener(this, controller) ;
 		addKeyListener(kl) ;
 		// set the frame to a fixed size for its width and height and put it on display
-		setSize(600, 600) ;
-		controller.getBoxPanel().setBounds(0, 0, Constants.VIEW_WIDTH, 50);
-		controller.getPanel().setBounds(0, 50, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
+		setSize(500, 500) ;
+		//controller.getBoxPanel().setBounds(0, 0, Constants.VIEW_WIDTH, 50);
+		//controller.getPanel().setBounds(0, 50, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
 		setVisible(true) ;
 		// focus should be on the JFrame of the MazeApplication and not on the maze panel
 		// such that the SimpleKeyListener kl is used

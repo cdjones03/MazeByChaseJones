@@ -151,6 +151,8 @@ public class Controller {
      * @param filename gives file to load maze from
      */
     public void switchFromTitleToGenerating(String filename) {
+    	boxPanel.setVisible(false);
+    	boxPanel.invalidate();
         currentState = states[1];
         currentState.setFileName(filename);
         currentState.start(this, panel);
