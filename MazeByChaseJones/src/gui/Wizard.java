@@ -128,49 +128,34 @@ public class Wizard {
 	public boolean drive2Exit() throws Exception {
 		System.out.println("This is wizard");
 		int[] curPos = robot.getCurrentPosition();
-		
-		System.out.println("curPos " + curPos[0] + curPos[1]);
-		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.North))
-			System.out.println("1 north");
-		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.South))
-			System.out.println("1 south");
-		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.East))
-			System.out.println("1 east");
-		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.West))
-			System.out.println("1 west");
-		
 		int[] exit = dist.getExitPosition();
-		System.out.println("exit " + exit[0] + " " + exit[1]);
 		
 		int[] nextPos = {0, 0};
 		while(robot.getBatteryLevel() >= 5 && dist.getDistanceValue(curPos[0], curPos[1]) > 2)
 		{
 			curPos = robot.getCurrentPosition();
-			System.out.println("curPos " + curPos[0] + curPos[1]);
-			System.out.println("cur dist " + dist.getDistanceValue(curPos[0], curPos[1]));
 			
 			nextPos = config.getNeighborCloserToExit(curPos[0], curPos[1]);
-			System.out.println("nextPos " + nextPos[0] + " " + nextPos[1]);
 			
 			if(nextPos[1] == curPos[1]+1) //Go north
 			{
 				switch(robot.getCurrentDirection()) {
 				case North :
-					System.out.println("north north");
+					//System.out.println("north north");
 					robot.move(1, true);
 					break;
 				case East :
-					System.out.println("north east");
+					//System.out.println("north east");
 					robot.rotate(Turn.LEFT);
 					robot.move(1, true);
 					break;
 				case West :
-					System.out.println("north west");
+					//System.out.println("north west");
 					robot.rotate(Turn.RIGHT);
 					robot.move(1, true);
 					break;
 				case South :
-					System.out.println("north south");
+					//System.out.println("north south");
 					robot.rotate(Turn.RIGHT);
 					robot.rotate(Turn.RIGHT);
 					robot.move(1, true);
@@ -180,21 +165,21 @@ public class Wizard {
 			{
 				switch(robot.getCurrentDirection()) {
 				case South :
-					System.out.println("south south");
+					//System.out.println("south south");
 					robot.move(1, true);
 					break;
 				case East :
-					System.out.println("south east");
+					//System.out.println("south east");
 					robot.rotate(Turn.RIGHT);
 					robot.move(1, true);
 					break;
 				case West :
-					System.out.println("south west");
+					//System.out.println("south west");
 					robot.rotate(Turn.LEFT);
 					robot.move(1, true);
 					break;
 				case North :
-					System.out.println("south north");
+					//System.out.println("south north");
 					robot.rotate(Turn.RIGHT);
 					robot.rotate(Turn.RIGHT);
 					robot.move(1, true);
@@ -204,21 +189,21 @@ public class Wizard {
 			{
 				switch(robot.getCurrentDirection()) {
 				case North :
-					System.out.println("east north");
+					//System.out.println("east north");
 					robot.rotate(Turn.RIGHT);
 					robot.move(1, true);
 					break;
 				case East :
-					System.out.println("east east");
+					//System.out.println("east east");
 					robot.move(1, true);
 					break;
 				case South :
-					System.out.println("east south");
+					//System.out.println("east south");
 					robot.rotate(Turn.LEFT);
 					robot.move(1, true);
 					break;
 				case West :
-					System.out.println("east west");
+					//System.out.println("east west");
 					robot.rotate(Turn.RIGHT);
 					robot.rotate(Turn.RIGHT);
 					robot.move(1, true);
@@ -229,21 +214,21 @@ public class Wizard {
 			{
 				switch(robot.getCurrentDirection()) {
 				case North :
-					System.out.println("west north");
+					//System.out.println("west north");
 					robot.rotate(Turn.LEFT);
 					robot.move(1, true);
 					break;
 				case South :
-					System.out.println("west south");
+					//System.out.println("west south");
 					robot.rotate(Turn.RIGHT);
 					robot.move(1, true);
 					break;
 				case West :
-					System.out.println("west west");
+					//System.out.println("west west");
 					robot.move(1, true);
 					break;
 				case East :
-					System.out.println("west east");
+					//System.out.println("west east");
 					robot.rotate(Turn.RIGHT);
 					robot.rotate(Turn.RIGHT);
 					robot.move(1, true);
@@ -251,17 +236,65 @@ public class Wizard {
 			}
 			
 		}
+		
 		curPos = robot.getCurrentPosition();
+		//System.out.println(robot.getCurrentDirection());
+		//System.out.println("width " + config.getWidth() + " height " + config.getHeight());
+		//System.out.println("curPos " + curPos[0] +  " " + curPos[1]);
 		if(cells.isExitPosition(curPos[0], curPos[1])) {
-			System.out.println("at exit here");
-			if(!(robot.canSeeExit(Direction.FORWARD)))
+			//System.out.println("at exit here");
+			if(curPos[0] == 0 && curPos[1] !=(config.getHeight()-1) && curPos[1] != 0) {
+				while(!(robot.getCurrentDirection().equals(CardinalDirection.West)))
+					robot.rotate(Turn.RIGHT);
+				robot.move(1, true);
+			}
+			if(curPos[0] == 0 && curPos[1] == (config.getHeight()-1)) {
+				while(!(robot.getCurrentDirection().equals(CardinalDirection.West)))
+					robot.rotate(Turn.RIGHT);
+				robot.move(1, true);
 				robot.rotate(Turn.RIGHT);
-			if(!(robot.canSeeExit(Direction.FORWARD)))
+				robot.move(1, true);
+				}
+			if(curPos[0] == 0 && curPos[1] == 0) {
+				while(!(robot.getCurrentDirection().equals(CardinalDirection.West)))
+					robot.rotate(Turn.RIGHT);
+				robot.move(1, true);
+				robot.rotate(Turn.LEFT);
+				robot.move(1, true);
+			}
+			if(curPos[0] != 0 && curPos[0] != config.getWidth()-1 && curPos[1] == 0) {
+				while(!(robot.getCurrentDirection().equals(CardinalDirection.South)))
+					robot.rotate(Turn.RIGHT);
+				robot.move(1, true);
+				}
+			if(curPos[0] == config.getWidth()-1 && curPos[1] == 0) {
+				while(!(robot.getCurrentDirection().equals(CardinalDirection.South)))
+					robot.rotate(Turn.RIGHT);
+				robot.move(1, true);
+				robot.rotate(Turn.LEFT);
+				robot.move(1, true);
+			}
+			if(curPos[0] == config.getWidth()-1 && curPos[1] != 0 && curPos[1] != config.getHeight()-1) {
+				while(!(robot.getCurrentDirection().equals(CardinalDirection.East)))
+					robot.rotate(Turn.RIGHT);
+				robot.move(1, true);
+			}
+			if(curPos[0] == config.getWidth()-1 && curPos[1] == config.getHeight()-1) {
+				while(!(robot.getCurrentDirection().equals(CardinalDirection.North)))
+					robot.rotate(Turn.RIGHT);
+				robot.move(1, true);
 				robot.rotate(Turn.RIGHT);
-			if(!(robot.canSeeExit(Direction.FORWARD)))
-				robot.rotate(Turn.RIGHT);
-			robot.move(1, true);
-		}
+				robot.move(1, true);
+			}
+			if(curPos[0] != config.getWidth()-1 && curPos[0] != 0 && curPos[1] == config.getHeight()-1) {
+				while(!(robot.getCurrentDirection().equals(CardinalDirection.North)))
+					robot.rotate(Turn.RIGHT);
+				robot.move(1, true);
+			}
+			
+			
+			}
+		
 		return true;
 	}
 	}

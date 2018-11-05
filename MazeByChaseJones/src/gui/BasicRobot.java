@@ -207,8 +207,7 @@ public class BasicRobot implements Robot {
 		assert batteryLevel >= 1 : " not enough energy to sense exit";
 		if(distanceToObstacle(direction) == Integer.MAX_VALUE)
 			return true;
-		else
-			return false;
+		return false;
 	}
 
 	@Override
@@ -300,13 +299,13 @@ public class BasicRobot implements Robot {
 			System.out.println(curPos[0] + " " + curPos[1] + " " + translateDir(direction));
 
 			int[] newPos = curPos;
-			while(cells.canGo(wall) && !(cells.isExitPosition(newPos[0], newPos[1])))
+			while(cells.hasNoWall(curPos[0], curPos[1], translateDir(direction)) && !(cells.isExitPosition(newPos[0], newPos[1])))
 			{
 				distCount++;
-				newPos = getNewPos(newPos);
-				wall = new Wall(newPos[0], newPos[1], translateDir(direction));
+				curPos = getNewPos(newPos);
+				//wall = new Wall(newPos[0], newPos[1], translateDir(direction));
 			}
-			if(cells.isExitPosition(newPos[0], newPos[1]))
+			if(cells.isExitPosition(curPos[0], curPos[1]))
 				return Integer.MAX_VALUE;
 		}
 		
@@ -373,16 +372,16 @@ public class BasicRobot implements Robot {
 		switch(curDir)
 		{
 		case East :
-			newPos[1]++;
-			break;
-		case West :
-			newPos[1]--;
-			break;
-		case North :
 			newPos[0]++;
 			break;
-		case South :
+		case West :
 			newPos[0]--;
+			break;
+		case North :
+			newPos[1]++;
+			break;
+		case South :
+			newPos[1]--;
 			break;
 		default :
 			break;
