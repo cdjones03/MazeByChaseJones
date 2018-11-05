@@ -167,7 +167,7 @@ public class FirstPersonDrawer {
         // draw background figure: black on bottom half, grey on top half
         drawBackground(g);
         // set color to white and draw what ever can be seen from the current position
-        panel.setColor(panel.getColorWhite());
+        panel.setColor(MazePanel.getColorWhite());
         // reset the set of ranges to a single new element (0,width-1)
         // to cover the full width of the view 
         // as we have not drawn any polygons (walls) yet.
@@ -210,7 +210,7 @@ public class FirstPersonDrawer {
 	 */
 	private void drawBackground(Graphics graphics) {
 		// black rectangle in upper half of screen
-		graphics.setColor(0,0,0);
+		graphics.setColor(MazePanel.getColorWhite());
 		graphics.fillRect(0, 0, viewWidth, viewHeight/2);
 		// grey rectangle in lower half of screen
 		graphics.setColor(MazePanel.getColorDarkGrey());

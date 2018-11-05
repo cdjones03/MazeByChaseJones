@@ -3,8 +3,6 @@
  */
 package gui;
 
-import java.awt.Graphics;
-
 import generation.CardinalDirection;
 import generation.Cells;
 import generation.MazeConfiguration;

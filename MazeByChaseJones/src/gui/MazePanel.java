@@ -37,6 +37,10 @@ public class MazePanel { //extends Panel  {
 		segColor = new Color(x, y, z);
 	}
 	
+	public static void setSegColor(int x) {
+		segColor = new Color(x);
+	}
+	
 	/**
 	 * Constructor. Object is not focusable.
 	 */

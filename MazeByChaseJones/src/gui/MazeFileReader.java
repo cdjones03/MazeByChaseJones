@@ -12,7 +12,7 @@ import generation.MazeConfiguration;
 import generation.MazeContainer;
 import generation.Seg;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -215,7 +215,7 @@ public class MazeFileReader {
 		Seg result = new Seg(x,y,dx,dy,dist,cc) ;
 		// get a few more attributes and set those explicitly
 		int col = getElementIntValue("colSeg_" + number+ "_" + i, eElement);
-		result.setColor(new Color(col)); 
+		MazePanel.setSegColor(col);
 		result.setSeen(getElementBooleanValue("seenSeg_" + number+ "_" + i, eElement));
 		result.setPartition(getElementBooleanValue("partitionSeg_" + number+ "_" + i, eElement));
 		return result;
