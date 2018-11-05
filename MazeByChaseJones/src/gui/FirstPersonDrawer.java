@@ -210,7 +210,7 @@ public class FirstPersonDrawer {
 	 */
 	private void drawBackground(MazePanel panel) {
 		// black rectangle in upper half of screen
-		panel.getBufferGraphics().setColor(MazePanel.getColorWhite());
+		panel.getBufferGraphics().setColor(MazePanel.getColorBlack());
 		panel.fillRect(0, 0, viewWidth, viewHeight/2);
 		// grey rectangle in lower half of screen
 		panel.setColor(MazePanel.getColorDarkGrey());

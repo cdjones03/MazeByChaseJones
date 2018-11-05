@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import gui.Constants.UserInput;
+import gui.Controller.Drivers;
 
 
 /**
@@ -137,13 +138,8 @@ public class SimpleKeyListener implements KeyListener {
 		//Other operations go through the current state.
 		if(uikey == UserInput.Left || uikey == UserInput.Right || uikey == UserInput.Up)
 		{
-			//((ManualDriver)controller.getDriver()).manualKeyDown(uikey); 
-			try {
-			((Wizard)controller.getWizard()).drive2Exit(); }
-			catch (Exception e)
-			{
-				
-			}
+			if (controller.getCurDriver().equals(Drivers.Manual))
+				((ManualDriver)controller.getDriver()).manualKeyDown(uikey); 
 		}
 		else
 			controller.keyDown(uikey, value);

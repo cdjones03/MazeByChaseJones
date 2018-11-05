@@ -2,6 +2,7 @@ package gui;
 
 import generation.Order;
 import gui.Constants.UserInput;
+import gui.Controller.Drivers;
 
 /**
  * Class handles the user interaction
@@ -145,7 +146,7 @@ public class StateTitle extends DefaultState {
             control.switchFromTitleToGenerating(value);
         }*/
         if (view.getStart()) {
-        	control.switchFromTitleToGenerating(view.getSkill());
+        	control.switchFromTitleToGenerating(view.getSkill(), view.getChosenDriver(), view.getChosenMazeAlg());
         }
         else {
             System.out.println("StateTitle:unexpected command:" + key);
@@ -153,7 +154,7 @@ public class StateTitle extends DefaultState {
         return true;
     }
     
-    public String getDriver() {
+    public Drivers getDriver() {
     	return view.getChosenDriver();
     }
     

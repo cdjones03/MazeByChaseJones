@@ -79,6 +79,7 @@ public class ManualDriver implements RobotDriver {
 	 * @param input
 	 */
 	public void manualKeyDown(UserInput input) {
+		System.out.println("This is manuald");
 		switch(input)
 		{
 		case Up:

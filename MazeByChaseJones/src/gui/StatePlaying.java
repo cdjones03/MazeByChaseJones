@@ -80,8 +80,8 @@ public class StatePlaying extends DefaultState {
         // keep the reference to the controller to be able to call method to switch the state
         control = controller;
         // keep the reference to the panel for drawing
-        (control.getWizard()).setDistance(mazeConfig.getMazedists());
-        (control.getWizard()).setCells(mazeConfig.getMazecells());
+        control.getWizard().setDistance(mazeConfig.getMazedists());
+        control.getWizard().setCells(mazeConfig.getMazecells());
         this.panel = panel;
         //
         // adjust internal state of maze model
@@ -103,6 +103,24 @@ public class StatePlaying extends DefaultState {
         	// else: dry-run without graphics, most likely for testing purposes
         	printWarning();
         }
+        
+        try {
+        switch(control.getCurDriver()) {
+        case Wizard :
+        	control.getWizard().drive2Exit();
+        	break;
+        case Explorer :
+        	control.getExplorer().drive2Exit();
+        	break;
+        case WallFollower :
+        	control.getWallFollower().drive2Exit();
+        	break;
+        }
+        }
+        catch (Exception e) {
+        	e.printStackTrace();
+        }
+        
     }
     /**
      * Initializes the drawer for the first person view

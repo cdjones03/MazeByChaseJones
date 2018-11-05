@@ -17,6 +17,9 @@ import generation.Order;
 import generation.Order.Builder;
 import gui.Constants.StateGUI;
 
+import gui.Controller;
+import gui.Controller.Drivers;
+
 /**
  * Implements the screens that are displayed whenever the game is not in 
  * the playing state. The screens shown are the title screen, 
@@ -36,16 +39,16 @@ public class MazeView implements ActionListener{
     Controller control;
     
     int skill;
-    String chosenDriver;
     Builder chosenMazeAlg;
     boolean getStart;
+    Drivers chosenDriver;
     
     public int getSkill()
     {
     	return skill;
     }
     
-    public String getChosenDriver() {
+    public Drivers getChosenDriver() {
     	return chosenDriver;
     }
     
@@ -63,6 +66,7 @@ public class MazeView implements ActionListener{
         this.getStart = false;
         this.skill = 0;
         this.chosenMazeAlg = Builder.DFS;
+        this.chosenDriver = Drivers.Manual;
     }
     
     public void drawBoxes(MazePanel boxPanel, Controller controller)
@@ -75,7 +79,7 @@ public class MazeView implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent event)
 			{
-				control.switchFromTitleToGenerating(skill);
+				control.switchFromTitleToGenerating(skill, chosenDriver, chosenMazeAlg);
 			}
 				});
 		boxPanel.add(startB);
@@ -97,13 +101,13 @@ public class MazeView implements ActionListener{
     	skillBox.setLightWeightPopupEnabled (false);
     	skillBox.setOpaque(true);
     	
-    	String[] driver = {"Manual", "Wizard", "Explorer", "WallFollower"};
+    	Drivers[] driver = {Drivers.Manual, Drivers.Wizard, Drivers.Explorer, Drivers.WallFollower};
     	JComboBox driverBox = new JComboBox(driver);
     	driverBox.addActionListener(new ActionListener() {
     		@Override
     		public void actionPerformed(ActionEvent event) {
-    			JComboBox<String> combo = (JComboBox<String>) event.getSource();
-    	        chosenDriver = (String) combo.getSelectedItem();
+    			JComboBox<Drivers> combo = (JComboBox<Drivers>) event.getSource();
+    	        chosenDriver = (Drivers) combo.getSelectedItem();
     			}});
     	boxPanel.add(driverBox);
     	driverBox.setLightWeightPopupEnabled (false);

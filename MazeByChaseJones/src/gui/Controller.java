@@ -81,6 +81,10 @@ public class Controller {
      */
     boolean perfect;
     
+    public enum Drivers { Manual, Wizard, Explorer, WallFollower };
+    
+    Drivers curDriver;
+    
     MazePanel boxPanel;
     
     public Controller() {
@@ -95,14 +99,25 @@ public class Controller {
         builder = Order.Builder.DFS; // default
         perfect = false; // default
         
+        boxPanel = new MazePanel(); //For P4
+        
         //For P3
         robot = new BasicRobot();
         driver = new ManualDriver();
-        wizard = new Wizard();
-        driver.setRobot(robot);
-        //wizard.setRobot(robot);
+        //driver.setRobot(robot);
         
-        boxPanel = new MazePanel();
+        //For P4
+        curDriver = Drivers.Manual;
+        wizard = new Wizard();
+        explorer = new Explorer();
+        wallFollower = new WallFollower();
+        wizard.setRobot(robot);
+        //explorer.setRobot(robot);
+        //wallFollower.setRobot(robot);
+    }
+    
+    public Drivers getCurDriver() {
+    	return curDriver;
     }
     
     public void setFileName(String fileName) {
@@ -138,12 +153,13 @@ public class Controller {
      * A maze is generated.
      * @param skillLevel, 0 <= skillLevel, size of maze to be generated
      */
-    public void switchFromTitleToGenerating(int skillLevel) {
+    public void switchFromTitleToGenerating(int skillLevel, Drivers driver, Order.Builder builder) {
     	boxPanel.setVisible(false);
     	//boxPanel.invalidate();
         currentState = states[1];
-        currentState.setSkillLevel(((StateTitle)states[0]).getSkill());
-        currentState.setBuilder(((StateTitle)states[0]).getBuilder());
+        currentState.setSkillLevel(skillLevel);
+        currentState.setBuilder(builder);
+        curDriver = driver;
         currentState.setPerfect(perfect);
         currentState.start(this, panel);
     }
@@ -173,10 +189,23 @@ public class Controller {
         //Reset robot and driver for games other than first.
         this.getRobot().setBatteryLevel(3000);
         this.getRobot().resetOdometer();
-        this.getDriver().setRobot(this.getRobot());
-        //this.getWizard().setRobot(this.getRobot());
-        ((ManualDriver)this.getDriver()).resetEnergyConsumption();
+        switch(curDriver) {
+        case Manual :
+        	this.getDriver().setRobot(this.getRobot());
+        	((ManualDriver)this.getDriver()).resetEnergyConsumption();
+        	break;
+        case Wizard :
+        	this.getWizard().setRobot(this.getRobot());
+        	break;
+        case Explorer :
+        	this.getExplorer().setRobot(this.getRobot());
+        	break;
+        case WallFollower :
+        	this.getWallFollower().setRobot(this.getRobot());
+        	break;
+        }
     }
+    
     /**
      * Switches the controller to the final screen
      * @param pathLength gives the length of the path
@@ -224,6 +253,8 @@ public class Controller {
     RobotDriver driver;
     
     Wizard wizard;
+    WallFollower wallFollower;
+    Explorer explorer;
     
     /**
      * Sets the robot and robot driver
@@ -251,6 +282,15 @@ public class Controller {
     {
     	return wizard;
     }
+    
+    public WallFollower getWallFollower() {
+    	return wallFollower;
+    }
+    
+    public Explorer getExplorer() {
+    	return explorer;
+    }
+    
     /**
      * Provides access to the maze configuration. 
      * This is needed for a robot to be able to recognize walls

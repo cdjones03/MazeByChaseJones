@@ -122,6 +122,7 @@ public class Wizard {
 	public boolean drive2Exit() throws Exception {
 		//System.out.println("hello");
 		//robot.move(1, true);
+		System.out.println("This is wizard");
 		((BasicRobot) robot).getControl().setCurrentPosition(2, 2);
 		
 		int[] curPos = robot.getCurrentPosition();

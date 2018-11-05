@@ -142,6 +142,10 @@ public class MazePanel extends Panel  {
 		graphics.setColor(color);
 	}
 	
+	public static Color getColorBlack() {
+		return Color.black;
+	}
+	
 	public static Color getColorPink() {
 		return Color.PINK;
 	}
