@@ -1,9 +1,10 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Panel;
+//import java.awt.Panel;
 import java.awt.RenderingHints;
 
 /**
@@ -13,7 +14,7 @@ import java.awt.RenderingHints;
  * @author Peter Kemper
  *
  */
-public class MazePanel extends Panel  {
+public class MazePanel { //extends Panel  {
 	/* Panel operates a double buffer see
 	 * http://www.codeproject.com/Articles/2136/Double-buffer-in-standard-Java-AWT
 	 * for details
@@ -26,16 +27,26 @@ public class MazePanel extends Panel  {
 	// graphics is stored to allow clients to draw on the same graphics object repeatedly
 	// has benefits if color settings should be remembered for subsequent drawing operations
 	
+	static Color segColor;
+	
+	public static Color getSegColor() {
+		return segColor;
+	}
+	
+	public static void setSegColor(int x, int y, int z) {
+		segColor = new Color(x, y, z);
+	}
+	
 	/**
 	 * Constructor. Object is not focusable.
 	 */
 	public MazePanel() {
-		setFocusable(false);
+		//setFocusable(false);
 		bufferImage = null; // bufferImage initialized separately and later
 		graphics = null;	// same for graphics
 	}
 	
-	@Override
+	//@Override
 	public void update(Graphics g) {
 		paint(g);
 	}
@@ -54,7 +65,7 @@ public class MazePanel extends Panel  {
 	 * The given graphics object is the one that actually shows 
 	 * on the screen.
 	 */
-	@Override
+	//@Override
 	public void paint(Graphics g) {
 		if (null == g) {
 			System.out.println("MazePanel.paint: no graphics object, skipping drawImage operation");
@@ -103,6 +114,26 @@ public class MazePanel extends Panel  {
 			}
 		}
 		return graphics;
+	}
+	
+	public void setColor(Color color) {
+		graphics.setColor(color);
+	}
+	
+	public static Color getColorPink() {
+		return Color.PINK;
+	}
+	
+	public static Color getColorWhite() {
+		return Color.WHITE;
+	} 
+	
+	public static Color getColorGrey() {
+		return Color.GRAY;
+	}
+	
+	public static Color getColorDarkGrey() {
+		return Color.darkGray;
 	}
 
 }

@@ -1,12 +1,14 @@
 package generation;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.util.ArrayList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import gui.MazeFileWriter;
+
+import gui.MazePanel;
 
 /**
  * A segment is a continuous sequence of walls in the maze.
@@ -59,7 +61,7 @@ public class Seg {
     /**
      * color of segment, only set by constructor and file reader.
      */
-    private Color col;
+    //private Color col;
     /**
      * partition flag.
      */
@@ -145,25 +147,25 @@ public class Seg {
         final int rgbValue = calculateRGBValue(d);
         switch (((d >> 3) ^ cc) % 6) {
         case 0:
-            setColor(new Color(rgbValue, RGB_DEF, RGB_DEF));
+            MazePanel.setSegColor(rgbValue, RGB_DEF, RGB_DEF);
             break;
         case 1:
-            setColor(new Color(RGB_DEF, rgbValue, RGB_DEF));
+        	MazePanel.setSegColor(RGB_DEF, rgbValue, RGB_DEF);
             break;
         case 2:
-            setColor(new Color(RGB_DEF, RGB_DEF, rgbValue));
+        	MazePanel.setSegColor(RGB_DEF, RGB_DEF, rgbValue);
             break;
         case 3:
-            setColor(new Color(rgbValue, rgbValue, RGB_DEF));
+        	MazePanel.setSegColor(rgbValue, rgbValue, RGB_DEF);
             break;
         case 4:
-            setColor(new Color(RGB_DEF, rgbValue, rgbValue));
+        	MazePanel.setSegColor(RGB_DEF, rgbValue, rgbValue);
             break;
         case 5:
-            setColor(new Color(rgbValue, RGB_DEF, rgbValue));
+        	MazePanel.setSegColor(rgbValue, RGB_DEF, rgbValue);
             break;
         default:
-            setColor(new Color(RGB_DEF, RGB_DEF, RGB_DEF));
+        	MazePanel.setSegColor(RGB_DEF, RGB_DEF, RGB_DEF);
             break;
         }
     }
@@ -259,7 +261,7 @@ public class Seg {
         MazeFileWriter.appendChild(doc, mazeXML, "ySeg_" + number + "_" + i,
                 getStartPositionY());
         MazeFileWriter.appendChild(doc, mazeXML, "colSeg_" + number + "_" + i,
-                getColor().getRGB());
+                MazePanel.getSegColor().getRGB());
     }
 
     /**
@@ -289,7 +291,7 @@ public class Seg {
             return false;
         }
         if ((dist != o.dist) || (partition != o.partition) || (seen != o.seen)
-                || (col.getRGB() != o.col.getRGB())) {
+                || (MazePanel.getSegColor().getRGB() != MazePanel.getSegColor().getRGB())) {
             return false;
         }
         // all fields are equal, so both objects are equal
@@ -361,15 +363,15 @@ public class Seg {
     /**
      * @return the color
      */
-    public Color getColor() {
-        return col;
-    }
+    //public Color getColor() {
+       // return col;
+    //}
 
     /**
      * @param color
      *            the color to set
      */
-    public void setColor(final Color color) {
+    //public void setColor(final Color color) {
         /*
          * for debugging: use random color settings such that all segments look
          * different
@@ -378,8 +380,8 @@ public class Seg {
          * int b = SingleRandom.getRandom().nextIntWithinInterval(20,240) ;
          * this.col = new Color(r,g,b); return ;
          */
-        col = color;
-    }
+        //col = color;
+    //}
 
     /**
      * @return the x

@@ -8,10 +8,11 @@ import generation.BSPLeaf;
 import generation.BSPNode;
 import generation.Cells;
 import generation.Seg;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+//import java.awt.Color; //get rid of this for P5
+//import java.awt.Graphics;//get rid of this for P5
+//import java.awt.Graphics2D;//get rid of this for P5
 import java.util.ArrayList;
+import gui.MazePanel;
 
 /**
  * This class encapsulates all functionality for drawing the current view 
@@ -166,7 +167,7 @@ public class FirstPersonDrawer {
         // draw background figure: black on bottom half, grey on top half
         drawBackground(g);
         // set color to white and draw what ever can be seen from the current position
-        g.setColor(Color.white);
+        panel.setColor(panel.getColorWhite());
         // reset the set of ranges to a single new element (0,width-1)
         // to cover the full width of the view 
         // as we have not drawn any polygons (walls) yet.
@@ -209,10 +210,10 @@ public class FirstPersonDrawer {
 	 */
 	private void drawBackground(Graphics graphics) {
 		// black rectangle in upper half of screen
-		graphics.setColor(Color.black);
+		graphics.setColor(0,0,0);
 		graphics.fillRect(0, 0, viewWidth, viewHeight/2);
 		// grey rectangle in lower half of screen
-		graphics.setColor(Color.darkGray);
+		graphics.setColor(MazePanel.getColorDarkGrey());
 		graphics.fillRect(0, viewHeight/2, viewWidth, viewHeight/2);
 	}
 	/**

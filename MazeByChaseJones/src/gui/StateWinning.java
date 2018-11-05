@@ -1,7 +1,5 @@
 package gui;
 
-import java.awt.Graphics;
-
 import gui.Constants.UserInput;
 
 
