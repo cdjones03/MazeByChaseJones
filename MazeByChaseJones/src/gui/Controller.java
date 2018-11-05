@@ -100,7 +100,7 @@ public class Controller {
         driver = new ManualDriver();
         wizard = new Wizard();
         driver.setRobot(robot);
-        wizard.setRobot(robot);
+        //wizard.setRobot(robot);
         
         boxPanel = new MazePanel();
     }
@@ -173,8 +173,8 @@ public class Controller {
         //Reset robot and driver for games other than first.
         this.getRobot().setBatteryLevel(3000);
         this.getRobot().resetOdometer();
-        //this.getDriver().setRobot(this.getRobot());
-        this.getWizard().setRobot(this.getRobot());
+        this.getDriver().setRobot(this.getRobot());
+        //this.getWizard().setRobot(this.getRobot());
         ((ManualDriver)this.getDriver()).resetEnergyConsumption();
     }
     /**

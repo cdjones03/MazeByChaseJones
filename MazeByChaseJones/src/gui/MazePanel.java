@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-//import java.awt.Panel;
+import java.awt.Panel;
 import java.awt.RenderingHints;
+//import java.awt.image.BufferedImage;
 
 /**
  * Add functionality for double buffering to an AWT Panel class.
@@ -14,7 +15,7 @@ import java.awt.RenderingHints;
  * @author Peter Kemper
  *
  */
-public class MazePanel { //extends Panel  {
+public class MazePanel extends Panel  {
 	/* Panel operates a double buffer see
 	 * http://www.codeproject.com/Articles/2136/Double-buffer-in-standard-Java-AWT
 	 * for details
@@ -45,7 +46,7 @@ public class MazePanel { //extends Panel  {
 	 * Constructor. Object is not focusable.
 	 */
 	public MazePanel() {
-		//setFocusable(false);
+		setFocusable(false);
 		bufferImage = null; // bufferImage initialized separately and later
 		graphics = null;	// same for graphics
 	}
@@ -96,6 +97,7 @@ public class MazePanel { //extends Panel  {
 		if (null == graphics) { 
 			if (null == bufferImage) {
 				bufferImage = createImage(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
+				//bufferImage = new BufferedImage(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, BufferedImage.TYPE_INT_RGB);
 				if (null == bufferImage)
 				{
 					System.out.println("Error: creation of buffered image failed, presumedly container not displayable");
@@ -118,6 +120,14 @@ public class MazePanel { //extends Panel  {
 			}
 		}
 		return graphics;
+	}
+	
+	public void fillRect(int x, int y, int a, int b) {
+		graphics.fillRect(x, y, a, b);
+	}
+	
+	public void fillPolygon(int[] xPoints, int[] yPoints, int z) {
+		graphics.fillPolygon(xPoints, yPoints, z);
 	}
 	
 	public void setColor(Color color) {

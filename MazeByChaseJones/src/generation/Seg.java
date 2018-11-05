@@ -364,7 +364,7 @@ public class Seg {
      * @return the color
      */
     //public Color getColor() {
-       // return col;
+       //return MazePanel.getSegColor();
     //}
 
     /**

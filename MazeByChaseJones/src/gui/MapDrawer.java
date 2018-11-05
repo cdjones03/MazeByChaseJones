@@ -6,8 +6,9 @@ package gui;
 import generation.CardinalDirection;
 import generation.Cells;
 import generation.MazeConfiguration;
-//import java.awt.Color;
-//import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Graphics;
+import gui.MazePanel;
 
 /**
  * This class encapsulates all functionality to draw a map of the overall maze,
@@ -159,7 +160,7 @@ public class MapDrawer {
 		final int mazeWidth = mazeConfig.getWidth() ;
 		final int mazeHeight = mazeConfig.getHeight() ;
 		
-		g.setColor(255, 255, 255);
+		g.setColor(Color.WHITE);
 		
 		// note: 1/2 of width and height is the center of the screen
 		// the whole map is centered at the current position
@@ -200,9 +201,9 @@ public class MapDrawer {
 							mazeConfig.hasWall((x-1),y, CardinalDirection.East));
 
 				if(seenCells.hasWall(x,y, CardinalDirection.West))
-					g.setColor(255, 255, 255);
+					g.setColor(MazePanel.getColorWhite());
 				else 
-					g.setColor(153, 153, 153);
+					g.setColor(MazePanel.getColorGrey());
 				//g.setColor(seenCells.hasWall(x,y, CardinalDirection.West) ? (255,255,255) : Color.gray);
 				if ((seenCells.hasWall(x,y, CardinalDirection.West) || showMaze) && theCondition)
 					g.drawLine(startX, startY, startX, startY - mapScale); // x coordinate same

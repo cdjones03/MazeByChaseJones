@@ -74,7 +74,7 @@ public class FirstPersonDrawer {
 	 * with the current buffer image is the responsibility of
 	 * the StatePlaying class.
 	 */
-	private Graphics2D gc; 
+	//private Graphics2D gc; 
 	
 	/**
 	 * The current position (x,y) scaled by map_unit and 
@@ -151,13 +151,13 @@ public class FirstPersonDrawer {
 	 */
 	public void draw(MazePanel panel, int x, int y, int walkStep, int ang) {
 		// obtain a Graphics2D object we can draw on
-		Graphics g = panel.getBufferGraphics() ;
+		//Graphics g = panel.getBufferGraphics() ;
         // viewers draw on the buffer graphics
-        if (null == g) {
+        if (null == panel.getBufferGraphics()) {
             System.out.println("FirstPersonDrawer.draw: can't get graphics object to draw on, skipping redraw operation") ;
             return;
         }
-        gc = (Graphics2D) g ;
+        //gc = (Graphics2D) g ;
         
         // update fields angle, viewx, viewy for current position and viewing angle
         angle = ang ;
@@ -165,7 +165,7 @@ public class FirstPersonDrawer {
         
         // update graphics
         // draw background figure: black on bottom half, grey on top half
-        drawBackground(g);
+        drawBackground(panel);
         // set color to white and draw what ever can be seen from the current position
         panel.setColor(MazePanel.getColorWhite());
         // reset the set of ranges to a single new element (0,width-1)
@@ -177,7 +177,7 @@ public class FirstPersonDrawer {
         traverseNodeCounter = traverseSegSectorCounter =
         		drawRectCounter = drawRectLateCounter = drawRectSegmentCounter = 0;
         //
-        drawAllVisibleSectors(bspRoot);
+        drawAllVisibleSectors(panel, bspRoot);
 	}
 
 
@@ -208,25 +208,25 @@ public class FirstPersonDrawer {
 	 * Note that this also erases previous drawings of maze or map.
 	 * @param graphics to draw on, must be not null
 	 */
-	private void drawBackground(Graphics graphics) {
+	private void drawBackground(MazePanel panel) {
 		// black rectangle in upper half of screen
-		graphics.setColor(MazePanel.getColorWhite());
-		graphics.fillRect(0, 0, viewWidth, viewHeight/2);
+		panel.getBufferGraphics().setColor(MazePanel.getColorWhite());
+		panel.fillRect(0, 0, viewWidth, viewHeight/2);
 		// grey rectangle in lower half of screen
-		graphics.setColor(MazePanel.getColorDarkGrey());
-		graphics.fillRect(0, viewHeight/2, viewWidth, viewHeight/2);
+		panel.setColor(MazePanel.getColorDarkGrey());
+		panel.fillRect(0, viewHeight/2, viewWidth, viewHeight/2);
 	}
 	/**
 	 * Recursive method to explore tree of BSP nodes and draw all segments in leaf nodes 
 	 * where the bounding box is visible
 	 * @param node is the current node of interest
 	 */
-	private void drawAllVisibleSectors(BSPNode node) {
+	private void drawAllVisibleSectors(MazePanel panel, BSPNode node) {
 		traverseNodeCounter++; // debug
 		
 		// Anchor, stop recursion at leaf nodes
 		if (node.isIsleaf()) {
-			drawAllSegmentsOfASector((BSPLeaf) node);
+			drawAllSegmentsOfASector(panel, (BSPLeaf) node);
 			return;
 		}
 		
@@ -249,15 +249,15 @@ public class FirstPersonDrawer {
 		// if dot >= 0 consider right node before left node
 		BSPNode right = n.getRightBranch();
 		if ((dot >= 0) && (boundingBoxIsVisible(right))) {
-			drawAllVisibleSectors(right);
+			drawAllVisibleSectors(panel, right);
 		}
 		// consider left node
 		BSPNode left = n.getLeftBranch();
 		if (boundingBoxIsVisible(left))
-			drawAllVisibleSectors(left);
+			drawAllVisibleSectors(panel, left);
 		// if dot < 0 consider right node now (after left node)
 		if ((dot < 0) && (boundingBoxIsVisible(right))) {
-			drawAllVisibleSectors(right);
+			drawAllVisibleSectors(panel, right);
 		}
 		nesting--; // debug
 	}
@@ -367,7 +367,7 @@ public class FirstPersonDrawer {
 	 * Traverses all segments of this leaf and draws corresponding rectangles on screen
 	 * @param node is the leaf node
 	 */
-	private void drawAllSegmentsOfASector(BSPLeaf node) {
+	private void drawAllSegmentsOfASector(MazePanel panel, BSPLeaf node) {
 		ArrayList<Seg> sl = node.getSlist();
 		// debug
 		traverseSegSectorCounter++;
@@ -380,7 +380,7 @@ public class FirstPersonDrawer {
 		for (int i = 0; i != sl.size(); i++) {
 			Seg seg = (Seg) sl.get(i);
 			// draw rectangle
-			drawSegment(seg);
+			drawSegment(panel, seg);
 			// debug
 			if (deepDebug) {
 				dbg("                               ".substring(0, nesting) +
@@ -397,7 +397,7 @@ public class FirstPersonDrawer {
 	 * Helper method for drawAllSegmentsOfASector.
 	 * @param seg whose seen attribute may be set to true
 	 */
-	private void drawSegment(Seg seg) {
+	private void drawSegment(MazePanel panel, Seg seg) {
 		drawRectCounter++; // debug, counter
 		
 		// some notes: 
@@ -427,8 +427,8 @@ public class FirstPersonDrawer {
 		
 		// moved code for drawing bits and pieces into yet another method to 
 		// gain more clarity on what information is actually needed
-		gc.setColor(seg.getColor());
-		boolean drawn = drawSegmentPolygons(x1, x2, y11, y12, y21, y22);
+		panel.setColor(MazePanel.getSegColor());
+		boolean drawn = drawSegmentPolygons(panel, x1, x2, y11, y12, y21, y22);
 		
 		if (drawn && !seg.isSeen()) {
 			seg.setSeen(true); // updates the segment
@@ -452,7 +452,7 @@ public class FirstPersonDrawer {
 	 * @param y22
 	 * @return true if at least one polygon has been drawn, false otherwise
 	 */
-	private boolean drawSegmentPolygons(int x1, int x2, int y11, int y12, int y21, int y22) {
+	private boolean drawSegmentPolygons(MazePanel panel, int x1, int x2, int y11, int y12, int y21, int y22) {
 		// debugging
 		//System.out.println(drawrect_late_ct + " drawSegmentPieces: " + x1 + ", " + x2 
 		//		+ ", " + y11 + ", " + y12 + ", " + y21 + ", " + y22 );
@@ -507,7 +507,7 @@ public class FirstPersonDrawer {
 			// debug
 			//System.out.println("polygon-x: " + xps[0] + ", " + xps[1] + ", " + xps[2] + ", " + xps[3]) ;
 			//System.out.println("polygon-y: " + yps[0] + ", " + yps[1] + ", " + yps[2] + ", " + yps[3]) ;
-			gc.fillPolygon(xps, yps, 4);
+			panel.fillPolygon(xps, yps, 4);
 			// for debugging purposes, code will draw a red line around polygon
 			// this makes individual segments visible
 			/*
