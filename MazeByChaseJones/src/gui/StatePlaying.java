@@ -80,8 +80,12 @@ public class StatePlaying extends DefaultState {
         // keep the reference to the controller to be able to call method to switch the state
         control = controller;
         // keep the reference to the panel for drawing
+        control.getRobot().setMaze(controller);
         control.getWizard().setDistance(mazeConfig.getMazedists());
         control.getWizard().setCells(mazeConfig.getMazecells());
+        control.getWizard().setConfig(mazeConfig);
+        control.getWizard().setRobot(controller.getRobot());
+        ((ManualDriver) control.getDriver()).setConfig(mazeConfig);
         this.panel = panel;
         //
         // adjust internal state of maze model

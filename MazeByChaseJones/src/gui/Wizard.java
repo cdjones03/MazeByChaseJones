@@ -1,6 +1,7 @@
 package gui;
 
 import generation.Distance;
+import generation.MazeConfiguration;
 import generation.Wall;
 import gui.Robot.Direction;
 import gui.Robot.Turn;
@@ -18,6 +19,7 @@ public class Wizard {
 	private Robot robot;
 	private Distance dist;
 	private Cells cells;
+	private MazeConfiguration config;
 	
 	public Wizard()
 	{
@@ -36,6 +38,10 @@ public class Wizard {
 	public void setRobot(Robot r) {
 		// TODO Auto-generated method stub
 		robot = r;
+	}
+	
+	public void setConfig(MazeConfiguration configuration) {
+		config = configuration;
 	}
 	
 	public int getDistDir(Direction dir) throws Exception
@@ -120,101 +126,143 @@ public class Wizard {
 	}
 	
 	public boolean drive2Exit() throws Exception {
-		//System.out.println("hello");
-		//robot.move(1, true);
 		System.out.println("This is wizard");
-		((BasicRobot) robot).getControl().setCurrentPosition(2, 2);
-		
 		int[] curPos = robot.getCurrentPosition();
 		
-		  //EAST WEST SOUTH NORTH
-		System.out.println("self " + dist.getDistanceValue(curPos[0], curPos[1]));
-		System.out.println("east " + dist.getDistanceValue(curPos[0]+1, curPos[1]));
-		System.out.println("west " + dist.getDistanceValue(curPos[0]-1, curPos[1]));
-		System.out.println("south " + dist.getDistanceValue(curPos[0], curPos[1]-1));
-		System.out.println("north " + dist.getDistanceValue(curPos[0], curPos[1]+1));
-		/*
-		System.out.println(((BasicRobot) robot).translateDir(Direction.FORWARD));
-		if(cells.hasWall(curPos[1], curPos[0], ((BasicRobot) robot).translateDir(Direction.FORWARD)))
-			System.out.println("1 forward");
-		System.out.println(((BasicRobot) robot).translateDir(Direction.RIGHT));
-		if(cells.hasWall(curPos[1], curPos[0], ((BasicRobot) robot).translateDir(Direction.RIGHT)))
-			System.out.println("1 right");
-		System.out.println(((BasicRobot) robot).translateDir(Direction.LEFT));
-		if(cells.hasWall(curPos[1], curPos[0], ((BasicRobot) robot).translateDir(Direction.LEFT)))
-			System.out.println("1 left");*/
-		
-		if(cells.hasWall(curPos[0], curPos[1], CardinalDirection.North))
+		System.out.println("curPos " + curPos[0] + curPos[1]);
+		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.North))
 			System.out.println("1 north");
-		if(cells.hasWall(curPos[0], curPos[1], CardinalDirection.South))
+		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.South))
 			System.out.println("1 south");
-		if(cells.hasWall(curPos[0], curPos[1], CardinalDirection.East))
+		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.East))
 			System.out.println("1 east");
-		if(cells.hasWall(curPos[0], curPos[1], CardinalDirection.West))
+		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.West))
 			System.out.println("1 west");
 		
+		int[] exit = dist.getExitPosition();
+		System.out.println("exit " + exit[0] + " " + exit[1]);
 		
-		Direction moveDir = Direction.FORWARD;
-		
-		int checkDist = dist.getDistanceValue(curPos[0], curPos[1]);
-		int curDist = dist.getDistanceValue(curPos[0], curPos[1]);
-		
-		int count = 0;
-		while(robot.getBatteryLevel() >= 5)
+		int[] nextPos = {0, 0};
+		while(robot.getBatteryLevel() >= 5 && dist.getDistanceValue(curPos[0], curPos[1]) > 2)
 		{
-			System.out.println("count " + count);
 			curPos = robot.getCurrentPosition();
-			checkDist = dist.getDistanceValue(curPos[0], curPos[1]);
-			curDist = dist.getDistanceValue(curPos[0], curPos[1]);
 			System.out.println("curPos " + curPos[0] + curPos[1]);
-
-			if(cells.canGo(new Wall(curPos[0], curPos[1], ((BasicRobot) robot).translateDir(Direction.FORWARD)))){
-				checkDist = getDistDir(Direction.FORWARD);
-				System.out.println("forward " + checkDist);
-				if(checkDist < curDist)
-				{
-					System.out.println("forward");
-					moveDir = Direction.FORWARD;
-				}
-			}
-
-			if(cells.canGo(new Wall(curPos[0], curPos[1], ((BasicRobot) robot).translateDir(Direction.RIGHT)))){
-				checkDist = getDistDir(Direction.RIGHT);
-				System.out.println("right " + checkDist);
-				if(checkDist < curDist)
-				{
-					System.out.println("right");
-					moveDir = Direction.RIGHT;
-				}
-			}
-
-			if(cells.canGo(new Wall(curPos[0], curPos[1], ((BasicRobot) robot).translateDir(Direction.LEFT)))) {
-				checkDist = getDistDir(Direction.LEFT);
-				System.out.println("left " + checkDist);
-				if(checkDist < curDist)
-				{
-					System.out.println("left");
-					moveDir = Direction.LEFT;
-				}
-			}
-
-			if(moveDir.equals(Direction.FORWARD))
-				robot.move(1, true);
-			else if(moveDir.equals(Direction.RIGHT))
+			System.out.println("cur dist " + dist.getDistanceValue(curPos[0], curPos[1]));
+			
+			nextPos = config.getNeighborCloserToExit(curPos[0], curPos[1]);
+			System.out.println("nextPos " + nextPos[0] + " " + nextPos[1]);
+			
+			if(nextPos[1] == curPos[1]+1) //Go north
 			{
+				switch(robot.getCurrentDirection()) {
+				case North :
+					System.out.println("north north");
+					robot.move(1, true);
+					break;
+				case East :
+					System.out.println("north east");
+					robot.rotate(Turn.LEFT);
+					robot.move(1, true);
+					break;
+				case West :
+					System.out.println("north west");
+					robot.rotate(Turn.RIGHT);
+					robot.move(1, true);
+					break;
+				case South :
+					System.out.println("north south");
+					robot.rotate(Turn.RIGHT);
+					robot.rotate(Turn.RIGHT);
+					robot.move(1, true);
+				}
+			}
+			else if(nextPos[1] == curPos[1]-1) //Go South
+			{
+				switch(robot.getCurrentDirection()) {
+				case South :
+					System.out.println("south south");
+					robot.move(1, true);
+					break;
+				case East :
+					System.out.println("south east");
+					robot.rotate(Turn.RIGHT);
+					robot.move(1, true);
+					break;
+				case West :
+					System.out.println("south west");
+					robot.rotate(Turn.LEFT);
+					robot.move(1, true);
+					break;
+				case North :
+					System.out.println("south north");
+					robot.rotate(Turn.RIGHT);
+					robot.rotate(Turn.RIGHT);
+					robot.move(1, true);
+				}
+			}
+			else if(nextPos[0] == curPos[0]+1) //Go East
+			{
+				switch(robot.getCurrentDirection()) {
+				case North :
+					System.out.println("east north");
+					robot.rotate(Turn.RIGHT);
+					robot.move(1, true);
+					break;
+				case East :
+					System.out.println("east east");
+					robot.move(1, true);
+					break;
+				case South :
+					System.out.println("east south");
+					robot.rotate(Turn.LEFT);
+					robot.move(1, true);
+					break;
+				case West :
+					System.out.println("east west");
+					robot.rotate(Turn.RIGHT);
+					robot.rotate(Turn.RIGHT);
+					robot.move(1, true);
+					
+				}
+			}
+			else if(nextPos[0] == curPos[0]-1) //Go West
+			{
+				switch(robot.getCurrentDirection()) {
+				case North :
+					System.out.println("west north");
+					robot.rotate(Turn.LEFT);
+					robot.move(1, true);
+					break;
+				case South :
+					System.out.println("west south");
+					robot.rotate(Turn.RIGHT);
+					robot.move(1, true);
+					break;
+				case West :
+					System.out.println("west west");
+					robot.move(1, true);
+					break;
+				case East :
+					System.out.println("west east");
+					robot.rotate(Turn.RIGHT);
+					robot.rotate(Turn.RIGHT);
+					robot.move(1, true);
+				}
+			}
+			
+		}
+		curPos = robot.getCurrentPosition();
+		if(cells.isExitPosition(curPos[0], curPos[1])) {
+			System.out.println("at exit here");
+			if(!(robot.canSeeExit(Direction.FORWARD)))
 				robot.rotate(Turn.RIGHT);
-				robot.move(1, true);
-			}
-			else if(moveDir.equals(Direction.LEFT))
-			{
-				robot.rotate(Turn.LEFT);
-				robot.move(1, true);
-			}
-			//robot.rotate(Turn.RIGHT);	
-			if(count > 20)
-				break;
-			count++;
+			if(!(robot.canSeeExit(Direction.FORWARD)))
+				robot.rotate(Turn.RIGHT);
+			if(!(robot.canSeeExit(Direction.FORWARD)))
+				robot.rotate(Turn.RIGHT);
+			robot.move(1, true);
 		}
 		return true;
 	}
-}
+	}
+

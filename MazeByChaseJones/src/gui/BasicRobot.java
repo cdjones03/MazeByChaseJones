@@ -379,10 +379,10 @@ public class BasicRobot implements Robot {
 			newPos[1]--;
 			break;
 		case North :
-			newPos[0]--;
+			newPos[0]++;
 			break;
 		case South :
-			newPos[0]++;
+			newPos[0]--;
 			break;
 		default :
 			break;

@@ -1,6 +1,8 @@
 package gui;
 
+import generation.CardinalDirection;
 import generation.Distance;
+import generation.MazeConfiguration;
 import gui.Constants.UserInput;
 
 /**
@@ -24,6 +26,8 @@ public class ManualDriver implements RobotDriver {
 	private Distance dist;
 	private int mazeWidth;
 	private int mazeHeight;
+	
+	MazeConfiguration config;
 
 	/**
 	 * Sets up a new ManualDriver with a new BasicRobot. Also
@@ -32,6 +36,10 @@ public class ManualDriver implements RobotDriver {
 	public ManualDriver() {
 		robot = new BasicRobot();
 		totalEnergyConsumed = 0;
+	}
+	
+	public void setConfig(MazeConfiguration configuration) {
+		config = configuration;
 	}
 
 	@Override
@@ -79,7 +87,38 @@ public class ManualDriver implements RobotDriver {
 	 * @param input
 	 */
 	public void manualKeyDown(UserInput input) {
-		System.out.println("This is manuald");
+		System.out.println("This is manual");
+		
+		for(int x = 0; x < 4; x++)
+			for(int y = 0; y < 4; y++)
+				if(config.getMazecells().isExitPosition(x, y))
+					System.out.println(x + " " + y + " the exit");
+		
+		int[] curPos;
+		try {
+			curPos = robot.getCurrentPosition();
+			System.out.println(curPos[0] + " " + curPos[1]);
+			if(robot.isAtExit())
+				System.out.println("at exit ");
+		}
+		catch (Exception e) {
+			
+		}
+		/*
+		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.North))
+			System.out.println("1 north");
+		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.South))
+			System.out.println("1 south");
+		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.East))
+			System.out.println("1 east");
+		if(config.hasWall(curPos[0], curPos[1], CardinalDirection.West))
+			System.out.println("1 west");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		System.out.println(robot.getCurrentDirection());
 		switch(input)
 		{
 		case Up:
