@@ -130,6 +130,14 @@ public class MazePanel extends Panel  {
 		graphics.fillPolygon(xPoints, yPoints, z);
 	}
 	
+	public void drawLine(int x, int y, int a, int b) {
+		graphics.drawLine(x, y, a, b);
+	}
+	
+	public void fillOval(int x, int y, int a, int b) {
+		graphics.fillOval(x, y, a, b);
+	}
+	
 	public void setColor(Color color) {
 		graphics.setColor(color);
 	}
@@ -148,6 +156,14 @@ public class MazePanel extends Panel  {
 	
 	public static Color getColorDarkGrey() {
 		return Color.darkGray;
+	}
+	
+	public static Color getColorRed() {
+		return Color.red;
+	}
+	
+	public static Color getColorYellow() {
+		return Color.yellow;
 	}
 
 }
