@@ -20,6 +20,7 @@ import gui.Constants.UserInput;
 /**
  * @author chasejones
  *
+ * JUnit tests for Wizard algorithm that solves maze.
  */
 public class WizardTest {
 	
@@ -42,7 +43,7 @@ public class WizardTest {
 		control = app.getController();
 
 		mazeFac = new MazeFactory(true); //Makes maze generation deterministic, for purposes of testing.
-		stub = new StubOrder(Builder.DFS, 2, false); //Builder type, skill level, whether perfect or not (i.e no rooms or yes rooms).
+		stub = new StubOrder(Builder.DFS, 0, false); //Builder type, skill level, whether perfect or not (i.e no rooms or yes rooms).
 		mazeFac.order(stub);
 		mazeFac.waitTillDelivered();
 		config = stub.getMazeConfiguration();
@@ -69,12 +70,38 @@ public class WizardTest {
 	}
 	
 	/**
-	 * Test's that a driver performing a turn operation actually changes the
-	 * robot's total energy consumption. 
+	 * Tests that a robot following the wizard algorithm in a level 0 maze
+	 * actually finishes the maze. 
 	 */
 	@Test
 	public void finishesMaze()
 	{
+		try {
+			assertTrue(wizard.drive2Exit());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Tests that a robot following the wizard algorithm in a level 5 maze, 
+	 * i.e. with rooms, actually finishes the maze.
+	 */
+	@Test
+	public void finishesMazeWithRooms() {
+		mazeFac = new MazeFactory(true); //Makes maze generation deterministic, for purposes of testing.
+		stub = new StubOrder(Builder.DFS, 5, false); //Builder type, skill level, whether perfect or not (i.e no rooms or yes rooms).
+		mazeFac.order(stub);
+		mazeFac.waitTillDelivered();
+		config = stub.getMazeConfiguration();
+		
+		control.switchFromGeneratingToPlaying(config);
+		
+		robot = (BasicRobot) control.getRobot();
+		wizard = (Wizard) control.getWizard();
+		robot.setMaze(control);
+		wizard.setRobot(robot);
 		try {
 			assertTrue(wizard.drive2Exit());
 		} catch (Exception e) {

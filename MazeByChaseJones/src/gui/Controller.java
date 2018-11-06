@@ -85,7 +85,7 @@ public class Controller {
     
     Drivers curDriver;
     
-    MazePanel boxPanel;
+    private MazePanel boxPanel;
     
     public Controller() {
     	states = new State[4];
@@ -246,15 +246,15 @@ public class Controller {
     /**
      * The robot that interacts with the controller starting from P3
      */
-    Robot robot;
+    private Robot robot;
     /**
      * The driver that interacts with the robot starting from P3
      */
-    RobotDriver driver;
+    private RobotDriver driver;
     
-    Wizard wizard;
-    WallFollower wallFollower;
-    Explorer explorer;
+    private Wizard wizard;
+    private WallFollower wallFollower;
+    private Explorer explorer;
     
     /**
      * Sets the robot and robot driver

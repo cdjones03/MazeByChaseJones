@@ -36,7 +36,7 @@ public class BasicRobot implements Robot {
 	final private float energyForFullRotation = 12;
 	final private float energyForStepForward = 5;
 	final private float initialBatteryLevel = 3000;
-	MazeConfiguration config;
+	private MazeConfiguration config;
 	
 	public Controller getControl()
 	{

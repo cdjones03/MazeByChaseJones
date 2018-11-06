@@ -33,7 +33,7 @@ public class MazeApplication extends JFrame {
 	 */
 	public MazeApplication() {
 		init(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	/**

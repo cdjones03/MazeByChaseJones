@@ -27,7 +27,7 @@ public class ManualDriver implements RobotDriver {
 	private int mazeWidth;
 	private int mazeHeight;
 	
-	MazeConfiguration config;
+	private MazeConfiguration config;
 
 	/**
 	 * Sets up a new ManualDriver with a new BasicRobot. Also
