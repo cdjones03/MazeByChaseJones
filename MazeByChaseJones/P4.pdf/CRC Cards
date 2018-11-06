@@ -1,1 +1,50 @@
-Hello
+---BasicRobot.java---
+Responsibilities:
+Keeps track of a robot in the maze. Robot has sensors to check for
+the exit and obstacles (walls, borders) that would be in its path.
+Robot has a battery that is depleted with every sensor use, move, or
+rotate.
+
+Collaborators:
+Controller.java
+ManualDriver.java
+
+---ManualDriver.java---
+Responsibilities:
+Receives input from user, then changes robot
+accordingly.
+Keeps track of the total path length and total energy consumption of
+the driver's robot.
+  
+Collaborators:
+BasicRobot.java
+Controller.java
+SimpleKeyListener.java
+
+---Wizard.java---
+Responsibilities:
+Drive robot to end of maze by implementing Wizard algorithm, 
+which use calculated Maze Distances to find next lowest distance
+value spot.
+
+Collaborators:
+BasicRobot.java
+Distance.java
+Cells.java
+
+---Explorer.java---
+Responsibilities:
+Drive robot to end of maze by implementing Explorer algorithm,
+which uses a memory of previously visited spots to decide where 
+to go next.
+
+Collaborators:
+BasicRobot.java
+
+---WallFollower.java---
+Responsibilities:
+Drive robot to end of maze by implementing WallFollower algorithm,
+which follows wall on left hand side to end of maze.
+
+Collaborators:
+BasicRobot.java
